@@ -1,9 +1,25 @@
+[![](https://jitpack.io/v/Payselection/Payselection-PayApp-SDK-Android.svg)](https://jitpack.io/#Payselection/Payselection-PayApp-SDK-Android)
+
 ## PaySelection SDK for Android
 
 PaySelection SDK позволяет интегрировать прием платежей в мобильные приложение для платформы Android.
 
 ### Требования
 Для работы PaySelection SDK необходим Android версии 5.0 или выше (API level 21)
+
+### Подключение
+В build.gradle уровня проекта добавить репозиторий Jitpack
+
+```
+repositories {
+	maven { url 'https://jitpack.io' }
+}
+```
+В build.gradle уровня приложения добавить зависимость:
+```
+implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version'
+```
+
 
 ### Полезные ссылки
 
