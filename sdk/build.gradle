@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.github.Payselection'
-version = '1.0'
+version = '2.0'
 
 android {
     compileSdk 33
@@ -16,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 2
-        versionName "1.0." + versionCode + "-alpha"
+        versionName "2.0." + versionCode + "-alpha"
 
     }
 
@@ -61,7 +61,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.Payselection'
                 artifactId = 'Payselection-SDK-Android'
-                version = '1.0'
+                version = '2.0'
             }
         }
     }

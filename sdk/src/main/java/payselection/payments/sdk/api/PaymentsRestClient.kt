@@ -12,7 +12,6 @@ import payselection.payments.sdk.api.models.TransactionStatusObject
 import payselection.payments.sdk.api.utils.safeApiResult
 import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.crypto.HMAC
-import payselection.payments.sdk.models.results.confirm.ConfirmResult
 import payselection.payments.sdk.models.results.pay.PaymentResult
 import payselection.payments.sdk.utils.Result
 import retrofit2.Retrofit
@@ -27,6 +26,7 @@ internal class PaymentsRestClient constructor(
 ) : PaymentsRestApi {
 
     private val paymentsRestApi: PaymentsApiFunctions
+    private var signature: String = ""
 
     init {
         var httpClient = OkHttpClient.Builder()
@@ -43,8 +43,10 @@ internal class PaymentsRestClient constructor(
             val id = UUID.randomUUID().toString()
             request.addHeader("X-SITE-ID", sdkConfiguration.siteId)
             request.addHeader("X-REQUEST-ID", id)
-            request.addHeader("X-REQUEST-SIGNATURE", generateSignature(id, original))
-
+            if (original.method == "GET") {
+                request.addHeader("X-REQUEST-SIGNATURE", generateSignature(id, original))
+            }
+            signature = ""
             chain.proceed(request.build())
         }
         if (sdkConfiguration.isDebug) {
@@ -84,7 +86,7 @@ internal class PaymentsRestClient constructor(
                 getBody(original.body)
         return HMAC.hash(
             type = "HmacSHA256",
-            key = sdkConfiguration.requestKey,
+            key = signature,
             value = signatureValue
         )
     }
@@ -93,19 +95,8 @@ internal class PaymentsRestClient constructor(
         paymentsRestApi.pay(data).await()
     }
 
-    override suspend fun getOrderStatus(orderId: String): Result<List<TransactionStatusObject>> = safeApiResult {
-        paymentsRestApi.getOrderStatus(orderId).await()
-    }
-
-    override suspend fun getTransaction(transactionId: String): Result<TransactionStatusObject> = safeApiResult {
+    override suspend fun getTransaction(transactionKey: String, transactionId: String): Result<TransactionStatusObject> = safeApiResult {
+        signature = transactionKey
         paymentsRestApi.getTransaction(transactionId).await()
-    }
-
-    override suspend fun refund(data: JsonObject): Result<PaymentResult> = safeApiResult {
-        paymentsRestApi.refund(data).await()
-    }
-
-    override suspend fun confirm(data: JsonObject): Result<ConfirmResult> = safeApiResult {
-        paymentsRestApi.confirm(data).await()
     }
 }

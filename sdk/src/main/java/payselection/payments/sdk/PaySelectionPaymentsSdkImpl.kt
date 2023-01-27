@@ -7,10 +7,7 @@ import payselection.payments.sdk.api.PaymentsRestClient
 import payselection.payments.sdk.api.utils.RestConverterImpl
 import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.crypto.CryptoModule
-import payselection.payments.sdk.models.requests.confirm.ConfirmData
 import payselection.payments.sdk.models.requests.pay.PaymentData
-import payselection.payments.sdk.models.requests.refund.RefundData
-import payselection.payments.sdk.models.results.confirm.ConfirmResult
 import payselection.payments.sdk.models.results.pay.PaymentResult
 import payselection.payments.sdk.models.results.status.TransactionStatus
 import payselection.payments.sdk.utils.Result
@@ -38,24 +35,10 @@ internal class PaymentSdkImpl(
         )
     }
 
-    override suspend fun getTransaction(transactionId: String): Result<TransactionStatus> {
-        return restClient.getTransaction(transactionId).convertResult {
+    override suspend fun getTransaction(transactionKey: String, transactionId: String): Result<TransactionStatus> {
+        return restClient.getTransaction(transactionKey, transactionId).convertResult {
             restConverter.convertTransaction(it)
         }
-    }
-
-    override suspend fun getOrderStatus(orderId: String): Result<List<TransactionStatus>> {
-        return restClient.getOrderStatus(orderId).convertResult {
-            restConverter.convertTransactions(it)
-        }
-    }
-
-    override suspend fun refund(refundData: RefundData): Result<PaymentResult> {
-        return restClient.refund(refundData.toJsonObject())
-    }
-
-    override suspend fun confirm(confirmData: ConfirmData): Result<ConfirmResult> {
-        return restClient.confirm(confirmData.toJsonObject())
     }
 
     private fun <T : Any> T.toJsonObject(): JsonObject {

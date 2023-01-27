@@ -8,11 +8,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import payselection.payments.sdk.PaySelectionPaymentsSdk
 import payselection.payments.sdk.configuration.SdkConfiguration
-import payselection.payments.sdk.models.requests.confirm.ConfirmData
 import payselection.payments.sdk.models.requests.pay.CardDetails
 import payselection.payments.sdk.models.requests.pay.PaymentData
 import payselection.payments.sdk.models.requests.pay.TransactionDetails
-import payselection.payments.sdk.models.requests.refund.RefundData
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,21 +27,28 @@ class MainActivity : AppCompatActivity() {
 
         sdk = PaySelectionPaymentsSdk.getInstance(
             SdkConfiguration(
-                "046fdb81fc698b90dd12f005bc399208fd01bb3225e962d58e115c86d905c5f2144cb5dfe2a30868fdf165a5010de46235a248c645b657c046038466537b01f1d6",
-                "20160",
-                "5ve4wkzTycthTKut",
+                "04a36ce5163f6120972a6bf46a76600953ce252e8d513e4eea1f097711747e84a2b7bf967a72cf064fedc171f5effda2b899e8c143f45303c9ee68f7f562951c88",
+                "20337",
                 true
             )
         )
 
+        makePay()
+    }
+
+    private fun getTransaction() {
+        GlobalScope.launch(handler) {
+            //Get this properties from PaymentResult
+            val transactionId = "PS00000300026126"
+            val transactionKey = "d58f99b6-6c6d-4186-9727-7ee5115ca288"
+            testGetTransaction(transactionKey, transactionId)
+        }
+    }
+
+    private fun makePay() {
         GlobalScope.launch(handler) {
             val orderId = "234574"
-            val transactionId = "PS00000300026126"
             testPay(orderId)
-//            testGetOrderStatus(orderId)
-//            testGetTransaction(transactionId)
-//            testRefund(transactionId)
-//            testRefund(orderId, transactionId)
         }
     }
 
@@ -73,54 +79,8 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    suspend fun testGetOrderStatus(orderId: String) {
-        sdk.getOrderStatus(orderId).proceedResult(
-            success = {
-                println("Result $it")
-            },
-            error = {
-                it.printStackTrace()
-            }
-        )
-    }
-
-    suspend fun testGetTransaction(transactionId: String) {
-        sdk.getTransaction(transactionId).proceedResult(
-            success = {
-                println("Result $it")
-            },
-            error = {
-                it.printStackTrace()
-            }
-        )
-    }
-
-    suspend fun testRefund(transactionId: String) {
-        sdk.refund(
-            refundData = RefundData(
-                transactionId = transactionId,
-                amount = "100",
-                currency = "RUB"
-            )
-        ).proceedResult(
-            success = {
-                println("Result $it")
-            },
-            error = {
-                it.printStackTrace()
-            }
-        )
-    }
-
-    suspend fun testConfirm(orderId: String, transactionId: String) {
-        sdk.confirm(
-            confirmData = ConfirmData(
-                transactionId = transactionId,
-                orderId = orderId,
-                paRes = "string",
-                MD = "string"
-            )
-        ).proceedResult(
+    suspend fun testGetTransaction(transactionKey: String, transactionId: String) {
+        sdk.getTransaction(transactionKey, transactionId).proceedResult(
             success = {
                 println("Result $it")
             },

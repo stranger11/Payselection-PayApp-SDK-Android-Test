@@ -10,5 +10,9 @@ data class PaymentResult(
     @SerializedName("Amount")
     val amount: String,
     @SerializedName("Currency")
-    val currency: String
+    val currency: String,
+    @SerializedName("RedirectUrl")
+    val redirectUrl: String,
+    @SerializedName("TransactionSecretKey")
+    val transactionSecretKey: String
 )
