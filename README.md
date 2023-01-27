@@ -38,9 +38,7 @@ implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version
 Вы можете с помощью SDK:
 
 * создать заказ и совершить платеж картой
-* получить все транзакции по заказу
 * получить детализацию по конкретной транзации
-* запросить возврат по заказу
 
 ### Инициализация PaySelection SDK:
 
@@ -48,9 +46,8 @@ implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version
 
 ```
 val configuration = SdkConfiguration(
-	"046fdb81fc698b90dd12f005bc399208fd01bb3225e962d58e115c86d905c5f2144cb5dfe2a30868fdf165a5010de46235a248c645b657c046038466537b01f1d6", // Публичный ключ
-	"20160", // Site ID
-	"5ve4wkzTycthTKut" // Секретный ключ
+	"04a36ce5163f6120972a6bf46a76600953ce252e8d513e4eea1f097711747e84a2b7bf967a72cf064fedc171f5effda2b899e8c143f45303c9ee68f7f562951c88", // Публичный ключ
+	"20337" // Site ID
 )
 ```
 
@@ -91,7 +88,9 @@ viewModelScope.launch(handler) {
 	).proceedResult(
 		success = {
 			// Получение данных о созданной транзакции
-		},
+            // в результате ответа приходит transactionId и transactionSecretKey
+            // "transactionSecretKey" служит параметром запроса получения статуса по transactionId		
+        },
 		error = {
 			// Обработка ошибки оплаты
 		}
@@ -101,41 +100,10 @@ viewModelScope.launch(handler) {
 
 ### Другие методы PaySelection SDK:
 
-1. Получение всех транзакций по заказку
+1. Получение статуса одной транзакции
 
 ```
-sdk.getOrderStatus(orderId)
-```
-
-2. Получение статуса одной транзакции
-
-```
-sdk.getTransaction(transactionId)
-```
-
-3. Оформление возврата
-
-```
-sdk.refund(
-	refundData = RefundData(
-		transactionId = transactionId,
-		amount = "100",
-		currency = "RUB"
-	)
-)
-```
-
-4. Завершения одностадийной/двухстадийной операции оплаты
-
-```
-sdk.confirm(
-	confirmData = ConfirmData(
-		transactionId = transactionId,
-		orderId = orderId,
-		paRes = "string",
-		MD = "string"
-	)
-)
+sdk.getTransaction(transactionSecretKey, transactionId)
 ```
 
 ### Поддержка
