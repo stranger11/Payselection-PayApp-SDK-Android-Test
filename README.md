@@ -88,8 +88,9 @@ viewModelScope.launch(handler) {
 	).proceedResult(
 		success = {
 			// Получение данных о созданной транзакции
-            // в результате ответа приходит transactionId и transactionSecretKey
-            // "transactionSecretKey" служит параметром запроса получения статуса по transactionId		
+            // в результате ответа приходит transactionId и transactionSecretKey, redirectUrl
+            // "transactionSecretKey" служит параметром запроса получения статуса по transactionId
+            // "redirectUrl" - ссылка на веб-интерфейс платежной системы		
         },
 		error = {
 			// Обработка ошибки оплаты
@@ -97,6 +98,7 @@ viewModelScope.launch(handler) {
 	)
 }
 ```
+3. Отобразите WebView с полученной ссылкой на веб-интерфейс платежной системы (параметр "redirectUrl" из ответа сервера на метод "pay")
 
 ### Другие методы PaySelection SDK:
 
