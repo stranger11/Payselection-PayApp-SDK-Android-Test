@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import payselection.payments.sdk.PaySelectionPaymentsSdk
 import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.models.requests.pay.CardDetails
+import payselection.payments.sdk.models.requests.pay.CustomerInfo
 import payselection.payments.sdk.models.requests.pay.PaymentData
 import payselection.payments.sdk.models.requests.pay.TransactionDetails
 
@@ -68,6 +69,15 @@ class MainActivity : AppCompatActivity() {
                     expMonth = "12",
                     expYear = "24"
                 )
+            ),
+            customerInfo = CustomerInfo(
+                email = "user@example.com",
+                phone = "+19991231212",
+                language = "en",
+                address = "string",
+                town = "string",
+                zip = "string",
+                country = "USA"
             )
         ).proceedResult(
             success = {

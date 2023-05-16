@@ -2,6 +2,7 @@ package payselection.payments.sdk.api.utils
 
 import com.google.gson.JsonObject
 import payselection.payments.sdk.api.models.TransactionStatusObject
+import payselection.payments.sdk.models.requests.pay.CustomerInfo
 import payselection.payments.sdk.models.requests.pay.TransactionDetails
 import payselection.payments.sdk.models.requests.pay.enum.PaymentDetailsType
 import payselection.payments.sdk.models.requests.pay.enum.PaymentMethod
@@ -17,12 +18,18 @@ import java.util.*
 
 internal class RestConverterImpl() : RestConverter {
 
-    override fun createTokenPayJson(orderId: String, description: String, token: String, transactionDetails: TransactionDetails): JsonObject {
+    override fun createTokenPayJson(orderId: String, description: String, token: String, transactionDetails: TransactionDetails, customerInfo: CustomerInfo?): JsonObject {
         val jsonObject = JsonObject()
         jsonObject.addProperty("OrderId", orderId)
         jsonObject.addProperty("Amount", transactionDetails.amount)
         jsonObject.addProperty("Currency", transactionDetails.currency)
         jsonObject.add("CustomerInfo", JsonObject().apply {
+            customerInfo?.email?.let { addProperty("Email", customerInfo.email) }
+            customerInfo?.phone?.let { addProperty("Phone", customerInfo.phone) }
+            customerInfo?.language?.let { addProperty("Language", customerInfo.language) }
+            customerInfo?.address?.let { addProperty("Address", customerInfo.address) }
+            customerInfo?.zip?.let { addProperty("ZIP", customerInfo.zip) }
+            customerInfo?.country?.let { addProperty("Country", customerInfo.country) }
             addProperty("IP", getIPAddress())
         })
         jsonObject.addProperty("Description", description)
