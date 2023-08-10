@@ -9,6 +9,7 @@ import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.crypto.CryptoModule
 import payselection.payments.sdk.models.requests.pay.CustomerInfo
 import payselection.payments.sdk.models.requests.pay.PaymentData
+import payselection.payments.sdk.models.requests.pay.ReceiptData
 import payselection.payments.sdk.models.results.pay.PaymentResult
 import payselection.payments.sdk.models.results.status.TransactionStatus
 import payselection.payments.sdk.utils.Result
@@ -23,7 +24,13 @@ internal class PaymentSdkImpl(
     private val gson = Gson()
     private val jsonParser = JsonParser()
 
-    override suspend fun pay(orderId: String, paymentData: PaymentData, description: String, customerInfo: CustomerInfo?): Result<PaymentResult> {
+    override suspend fun pay(
+        orderId: String,
+        paymentData: PaymentData,
+        description: String,
+        customerInfo: CustomerInfo?,
+        receiptData: ReceiptData?
+    ): Result<PaymentResult> {
         val paymentDataString = gson.toJson(paymentData).toString()
         val token = CryptoModule.createCryptogram(paymentDataString, configuration.publicKey)
         return restClient.pay(
@@ -32,7 +39,8 @@ internal class PaymentSdkImpl(
                 description = description,
                 token = token,
                 transactionDetails = paymentData.transactionDetails,
-                customerInfo = customerInfo
+                customerInfo = customerInfo,
+                receiptData = gson.toJsonTree(receiptData)
             )
         )
     }

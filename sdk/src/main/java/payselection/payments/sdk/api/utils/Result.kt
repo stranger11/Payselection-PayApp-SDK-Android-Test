@@ -1,5 +1,7 @@
 package payselection.payments.sdk.utils
 
+import android.util.Log
+
 sealed class Result<out R> {
 
     data class Success<out T>(val data: T?) : Result<T>()
@@ -14,8 +16,10 @@ sealed class Result<out R> {
 
     inline fun proceedResult(success: (data: R) -> Unit, error: (exception: Exception) -> Unit) {
         if (this is Success) {
-            if (data != null)
+            if (data != null) {
+                Log.d("Success", "$data")
                 success.invoke(data)
+            }
             else
                 error.invoke(EmptyBodyException())
         } else {

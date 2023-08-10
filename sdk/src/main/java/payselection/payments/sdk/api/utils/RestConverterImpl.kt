@@ -1,5 +1,6 @@
 package payselection.payments.sdk.api.utils
 
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import payselection.payments.sdk.api.models.TransactionStatusObject
 import payselection.payments.sdk.models.requests.pay.CustomerInfo
@@ -18,7 +19,14 @@ import java.util.*
 
 internal class RestConverterImpl() : RestConverter {
 
-    override fun createTokenPayJson(orderId: String, description: String, token: String, transactionDetails: TransactionDetails, customerInfo: CustomerInfo?): JsonObject {
+    override fun createTokenPayJson(
+        orderId: String,
+        description: String,
+        token: String,
+        transactionDetails: TransactionDetails,
+        customerInfo: CustomerInfo?,
+        receiptData: JsonElement?
+    ): JsonObject {
         val jsonObject = JsonObject()
         jsonObject.addProperty("OrderId", orderId)
         jsonObject.addProperty("Amount", transactionDetails.amount)
@@ -38,6 +46,10 @@ internal class RestConverterImpl() : RestConverter {
             addProperty("Type", PaymentDetailsType.Internal.name)
             addProperty("PayToken", token)
         })
+
+        receiptData?.let { data ->
+            jsonObject.add("ReceiptData", data)
+        }
         return jsonObject
     }
 

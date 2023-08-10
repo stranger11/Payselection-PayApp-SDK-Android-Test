@@ -5,9 +5,11 @@
 PaySelection SDK позволяет интегрировать прием платежей в мобильные приложение для платформы Android.
 
 ### Требования
+
 Для работы PaySelection SDK необходим Android версии 5.0 или выше (API level 21)
 
 ### Подключение
+
 В build.gradle уровня проекта добавить репозиторий Jitpack
 
 ```
@@ -15,11 +17,12 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 ```
+
 В build.gradle уровня приложения добавить зависимость:
+
 ```
 implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version'
 ```
-
 
 ### Полезные ссылки
 
@@ -32,7 +35,6 @@ implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version
 * **app** - Пример вызова методов с использованием SDK
 * **sdk** - Исходный код SDK
 
-
 ### Возможности PaySelection SDK:
 
 Вы можете с помощью SDK:
@@ -42,7 +44,7 @@ implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version
 
 ### Инициализация PaySelection SDK:
 
-1.	Создайте конфигурацию с данными из личного кабинета
+1. Создайте конфигурацию с данными из личного кабинета
 
 ```
 val configuration = SdkConfiguration(
@@ -51,7 +53,7 @@ val configuration = SdkConfiguration(
 )
 ```
 
-2.	Создайте экземпляр PaySelectionPaymentsSdk для работы с API
+2. Создайте экземпляр PaySelectionPaymentsSdk для работы с API
 
 ```
 val sdk = PayselectionPaymentsSdk.getInstance(configuration)
@@ -98,7 +100,9 @@ viewModelScope.launch(handler) {
 	)
 }
 ```
-3. Отобразите WebView с полученной ссылкой на веб-интерфейс платежной системы (параметр "redirectUrl" из ответа сервера на метод "pay")
+
+3. Отобразите WebView с полученной ссылкой на веб-интерфейс платежной системы (параметр "redirectUrl" из ответа сервера на метод "pay") с помощью
+   ThreeDsDialogFragment, который находится в пакете ui. Используйте интерфейс ThreeDSDialogListener для прослушивания статуса транзакции.
 
 ### Другие методы PaySelection SDK:
 
