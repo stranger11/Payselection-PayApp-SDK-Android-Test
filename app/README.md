@@ -5,11 +5,9 @@
 PaySelection SDK позволяет интегрировать прием платежей в мобильные приложение для платформы Android.
 
 ### Требования
-
 Для работы PaySelection SDK необходим Android версии 5.0 или выше (API level 21)
 
 ### Подключение
-
 В build.gradle уровня проекта добавить репозиторий Jitpack
 
 ```
@@ -17,9 +15,7 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 ```
-
 В build.gradle уровня приложения добавить зависимость:
-
 ```
 implementation 'com.github.Payselection:Payselection-PayApp-SDK-Android:$version'
 ```
@@ -100,7 +96,6 @@ viewModelScope.launch(handler) {
 	)
 }
 ```
-
 3. Отобразите WebView с полученной ссылкой на веб-интерфейс платежной системы (параметр "redirectUrl" из ответа сервера на метод "pay") с помощью
    ThreeDsDialogFragment, который находится в пакете ui. Используйте интерфейс ThreeDSDialogListener для прослушивания статуса транзакции.
 
