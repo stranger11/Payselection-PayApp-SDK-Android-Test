@@ -1,0 +1,2 @@
+-keep class org.bouncycastle.** { *; }
+-keep class payselection.payments.sdk.models.results.** { *; }

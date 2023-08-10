@@ -1,6 +1,9 @@
 package payselection.demo
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -8,33 +11,34 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import payselection.payments.sdk.PaySelectionPaymentsSdk
 import payselection.payments.sdk.configuration.SdkConfiguration
-import payselection.payments.sdk.models.requests.pay.CardDetails
-import payselection.payments.sdk.models.requests.pay.CustomerInfo
-import payselection.payments.sdk.models.requests.pay.PaymentData
-import payselection.payments.sdk.models.requests.pay.TransactionDetails
+import payselection.payments.sdk.models.requests.pay.*
+import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogListener {
 
     lateinit var sdk: PaySelectionPaymentsSdk
 
     private val handler = CoroutineExceptionHandler { context, exception ->
-        Toast.makeText(application, "Caught $exception", Toast.LENGTH_LONG).show()
+        runOnUiThread {
+            Toast.makeText(application, "Caught $exception", Toast.LENGTH_LONG).show()
+        }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         sdk = PaySelectionPaymentsSdk.getInstance(
             SdkConfiguration(
-                "04a36ce5163f6120972a6bf46a76600953ce252e8d513e4eea1f097711747e84a2b7bf967a72cf064fedc171f5effda2b899e8c143f45303c9ee68f7f562951c88",
-                "20337",
+                "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e",
+                "21044",
                 true
             )
         )
 
-        makePay()
+        makePay("5260111696757102")
     }
 
     private fun getTransaction() {
@@ -46,25 +50,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun makePay() {
+    private fun makePay(cardNumber: String) {
         GlobalScope.launch(handler) {
-            val orderId = "234574"
-            testPay(orderId)
+            val orderId = "SAM_SDK_3"
+            testPay(orderId, cardNumber)
         }
     }
 
-    suspend fun testPay(orderId: String) {
+    suspend fun testPay(orderId: String, cardNumber: String) {
         sdk.pay(
             orderId = orderId,
             description = "test payment",
             paymentData = PaymentData.create(
                 transactionDetails = TransactionDetails(
-                    amount = "100",
+                    amount = "10",
                     currency = "RUB"
                 ),
                 cardDetails = CardDetails(
                     cardholderName = "TEST CARD",
-                    cardNumber = "4111111111111111",
+                    cardNumber = cardNumber,
                     cvc = "123",
                     expMonth = "12",
                     expYear = "24"
@@ -82,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         ).proceedResult(
             success = {
                 println("Result $it")
+                show3DS(it.redirectUrl)
             },
             error = {
                 it.printStackTrace()
@@ -98,5 +103,20 @@ class MainActivity : AppCompatActivity() {
                 it.printStackTrace()
             }
         )
+    }
+
+    private fun show3DS(url: String) {
+        // Открываем 3ds форму
+        ThreeDsDialogFragment
+            .newInstance(url)
+            .show(supportFragmentManager, "3DS")
+    }
+
+    override fun onAuthorizationCompleted() {
+        Toast.makeText(application, "Success", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onAuthorizationFailed() {
+        Toast.makeText(application, "Fail", Toast.LENGTH_LONG).show()
     }
 }

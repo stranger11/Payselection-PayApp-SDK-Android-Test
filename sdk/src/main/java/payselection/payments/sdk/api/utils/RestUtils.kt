@@ -1,5 +1,6 @@
 package payselection.payments.sdk.api.utils
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import payselection.payments.sdk.api.models.ServerError
@@ -12,7 +13,9 @@ import java.net.UnknownHostException
 suspend fun <T : Any> safeApiResult(call: suspend () -> Response<T>): Result<T> {
     try {
         val response = call.invoke()
+        Log.d("Success", "${response.body()}")
         if (response.isSuccessful) {
+            Log.d("Success", "${response.body()}")
             return Result.Success(response.body())
         } else {
             response.errorBody()?.let { body ->
