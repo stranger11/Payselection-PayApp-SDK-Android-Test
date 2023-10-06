@@ -10,7 +10,7 @@ data class CustomerInfo(
     @SerializedName("ReceiptEmail")
     val receiptEmail: String? = null,
     @SerializedName("IsSendReceipt")
-    val isSendReceipt: Boolean = false,
+    val isSendReceipt: Boolean? = null,
     @SerializedName("Language")
     val language: String? = null,
     @SerializedName("Address")

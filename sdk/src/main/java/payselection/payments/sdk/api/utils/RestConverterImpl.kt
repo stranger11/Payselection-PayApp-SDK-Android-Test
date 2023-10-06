@@ -37,6 +37,8 @@ internal class RestConverterImpl() : RestConverter {
             customerInfo?.language?.let { addProperty("Language", customerInfo.language) }
             customerInfo?.address?.let { addProperty("Address", customerInfo.address) }
             customerInfo?.zip?.let { addProperty("ZIP", customerInfo.zip) }
+            customerInfo?.receiptEmail?.let { addProperty("ReceiptEmail", customerInfo.receiptEmail) }
+            customerInfo?.isSendReceipt?.let { addProperty("IsSendReceipt", customerInfo.isSendReceipt) }
             customerInfo?.country?.let { addProperty("Country", customerInfo.country) }
             addProperty("IP", getIPAddress())
         })
