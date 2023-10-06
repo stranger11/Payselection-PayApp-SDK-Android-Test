@@ -1,9 +1,7 @@
 package payselection.demo
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -82,7 +80,8 @@ class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogLis
                 town = "string",
                 zip = "string",
                 country = "USA"
-            )
+            ),
+            rebillFlag = false
         ).proceedResult(
             success = {
                 println("Result $it")

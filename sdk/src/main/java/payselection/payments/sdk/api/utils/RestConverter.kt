@@ -9,7 +9,15 @@ import payselection.payments.sdk.models.results.status.TransactionStatus
 
 internal interface RestConverter {
 
-    fun createTokenPayJson(orderId: String, description: String, token: String, transactionDetails: TransactionDetails, customerInfo: CustomerInfo?, receiptData: JsonElement?): JsonObject
+    fun createTokenPayJson(
+        orderId: String,
+        description: String,
+        token: String,
+        transactionDetails: TransactionDetails,
+        customerInfo: CustomerInfo?,
+        receiptData: JsonElement?,
+        rebillFlag: Boolean?
+    ): JsonObject
 
     fun convertTransactions(list: List<TransactionStatusObject>): List<TransactionStatus>
 

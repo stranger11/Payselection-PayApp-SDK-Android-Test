@@ -25,7 +25,8 @@ internal class RestConverterImpl() : RestConverter {
         token: String,
         transactionDetails: TransactionDetails,
         customerInfo: CustomerInfo?,
-        receiptData: JsonElement?
+        receiptData: JsonElement?,
+        rebillFlag: Boolean?
     ): JsonObject {
         val jsonObject = JsonObject()
         jsonObject.addProperty("OrderId", orderId)
@@ -42,6 +43,8 @@ internal class RestConverterImpl() : RestConverter {
             customerInfo?.country?.let { addProperty("Country", customerInfo.country) }
             addProperty("IP", getIPAddress())
         })
+        rebillFlag?.let {  jsonObject.addProperty("RebillFlag", rebillFlag) }
+
         jsonObject.addProperty("Description", description)
         jsonObject.addProperty("PaymentMethod", PaymentMethod.Token.name)
         jsonObject.add("PaymentDetails", JsonObject().apply {

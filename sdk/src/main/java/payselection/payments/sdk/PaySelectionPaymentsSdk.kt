@@ -15,7 +15,8 @@ interface PaySelectionPaymentsSdk {
         paymentData: PaymentData,
         description: String = "",
         customerInfo: CustomerInfo? = null,
-        receiptData: ReceiptData? = null
+        receiptData: ReceiptData? = null,
+        rebillFlag: Boolean? = null,
     ): Result<PaymentResult>
 
     suspend fun getTransaction(transactionKey: String, transactionId: String): Result<TransactionStatus>

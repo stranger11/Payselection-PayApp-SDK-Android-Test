@@ -29,7 +29,8 @@ internal class PaymentSdkImpl(
         paymentData: PaymentData,
         description: String,
         customerInfo: CustomerInfo?,
-        receiptData: ReceiptData?
+        receiptData: ReceiptData?,
+        rebillFlag: Boolean?
     ): Result<PaymentResult> {
         val paymentDataString = gson.toJson(paymentData).toString()
         val token = CryptoModule.createCryptogram(paymentDataString, configuration.publicKey)
@@ -40,7 +41,8 @@ internal class PaymentSdkImpl(
                 token = token,
                 transactionDetails = paymentData.transactionDetails,
                 customerInfo = customerInfo,
-                receiptData = gson.toJsonTree(receiptData)
+                receiptData = gson.toJsonTree(receiptData),
+                rebillFlag = rebillFlag
             )
         )
     }
