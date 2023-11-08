@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">PayselectionSdk-DEMO</string>
+
+    <string name="page_title">Оформление заказа №31</string>
+    <string name="card_title">Белый пончик</string>
+    <string name="card_disc">Металл, 13 см</string>
+    <string name="converted_price">99 ₽</string>
+
+    <string name="price">Стоимость</string>
+    <string name="delivery">Доставка</string>
+    <string name="nds">НДС</string>
+    <string name="sale">Скидка</string>
+    <string name="total">Итого</string>
+    <string name="pay">Оплатить</string>
+
+
+    <string name="payment_card">Оплата картой</string>
+    <string name="card_number">Номер карты</string>
+    <string name="dd_mm">ММ/ГГ</string>
+    <string name="cvv">CVV</string>
+
+    <string name="card_adding">Добавить карту</string>
+
+    <string name="error_cvv">Ошибка CVV</string>
+    <string name="error_date">Ошибка даты</string>
+    <string name="error_number">Некорректный номер карты</string>
+
+    <string name="pay_card">Оплатить картой</string>
+    <string name="save_card">Cохранить карту</string>
+
+
 </resources>

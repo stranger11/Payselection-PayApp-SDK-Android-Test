@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_sheet_bottom"
+    android:orientation="vertical"
+    android:paddingHorizontal="32dp">
+
+    <TextView
+        android:id="@+id/payCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/raleway_700"
+        android:fontFeatureSettings="pnum, lnum"
+        android:gravity="center"
+        android:text="@string/payment_card"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cardsPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="4"
+        android:layout_marginTop="24dp"
+        tools:listitem="@layout/i_card"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cardNumber"
+            style="@style/customEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_edit_text"
+            android:hint="@string/card_number"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintTextColor="@color/gray"
+            app:endIconTintMode="src_atop"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_visa_with_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editCardNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cardData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintTextColor="@color/gray"
+            style="@style/customEdit"
+            app:boxStrokeWidth="0dp"
+            android:background="@drawable/bg_edit_text"
+            android:hint="@string/dd_mm"
+            app:layout_constraintEnd_toStartOf="@+id/cardCvv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumber">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editCardData"
+                style="@style/customEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cardCvv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintTextColor="@color/gray"
+            app:boxStrokeWidth="0dp"
+            android:background="@drawable/bg_edit_text"
+            android:hint="@string/cvv"
+            app:endIconTintMode="src_atop"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_eye_with_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardData"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumber">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editCardCvv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/customEdit"
+                android:background="@android:color/transparent"
+                android:textColorHint="@color/gray" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/pay"
+        style="@style/buttonTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/raleway_700"
+        android:fontFeatureSettings="pnum, lnum"
+        android:text="@string/pay" />
+
+</LinearLayout>
