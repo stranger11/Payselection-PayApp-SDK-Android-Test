@@ -69,7 +69,7 @@ class CheckoutViewModel : ViewModel() {
             UiCard(
                 title = "**${card.number.takeLast(4)}",
                 cardType = getPaymentSystem(card.number)?.image,
-                icon = if (index == position) R.drawable.ic_ready else R.drawable.ic_ready_blue,
+                icon = R.drawable.ic_ready ,
                 backGround = if (index == position) R.drawable.bg_select_card else R.drawable.bg_card,
                 textColor = if (index == position) R.color.white else R.color.gray
             )

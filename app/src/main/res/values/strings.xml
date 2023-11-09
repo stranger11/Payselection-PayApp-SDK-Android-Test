@@ -27,6 +27,8 @@
 
     <string name="pay_card">Оплатить картой</string>
     <string name="save_card">Cохранить карту</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

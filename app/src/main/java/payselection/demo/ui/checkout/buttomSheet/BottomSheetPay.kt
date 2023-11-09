@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,7 +19,6 @@ import kotlinx.coroutines.launch
 import payselection.demo.R
 import payselection.demo.databinding.ButtomSheetBinding
 import payselection.demo.models.Card
-import payselection.demo.sdk.PaymentHelper
 import payselection.demo.ui.checkout.CheckoutViewModel
 import payselection.demo.ui.checkout.adapter.CardAdapter
 import payselection.demo.ui.checkout.common.CardListener
@@ -35,7 +35,7 @@ import payselection.payments.sdk.models.requests.pay.TransactionDetails
 import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
-class BottomSheetPay : BottomSheetDialogFragment(), CardListener, ThreeDsDialogFragment.ThreeDSDialogListener {
+class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
     private lateinit var binding: ButtomSheetBinding
     private val viewModel: CheckoutViewModel by viewModels()
 
@@ -205,10 +205,11 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, ThreeDsDialogF
             rebillFlag = false
         ).proceedResult(
             success = {
-                println("Result $it")
+                println("VIVI vse cruto")
                 show3DS(it.redirectUrl)
             },
             error = {
+                println("VIVI vse ploho ${it.printStackTrace()}")
                 it.printStackTrace()
             }
         )
@@ -225,11 +226,4 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, ThreeDsDialogF
         viewModel.onCardSelected(position)
     }
 
-    override fun onAuthorizationCompleted() {
-        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onAuthorizationFailed() {
-        Toast.makeText(requireContext(), "Fail", Toast.LENGTH_LONG).show()
-    }
 }

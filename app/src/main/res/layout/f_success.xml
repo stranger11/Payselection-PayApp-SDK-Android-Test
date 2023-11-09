@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.success.SuccessFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="76dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:gravity="center"
+            android:lineSpacingExtra="1sp"
+            android:text="Заказ №31 \n успешно оплачен"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Информация о заказе"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Заказ №31"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="12.09.2023 10:30"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Получатель"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Гарик Кравцов"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="+7 910 000-00-00"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Курьерская доставка"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Россия, г. Москва, ул. Цветной бульвар, д. 30, стр. 1"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Оплачено"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="Картой онлайн masterCard **** 3456"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="Стоимость"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="297 ₽"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="Доставка"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="149 ₽"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="НДС"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="0 ₽"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="Скидка"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="0 ₽"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="Итого"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="0 ₽"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/nav_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="48dp"
+            android:background="@drawable/bg_button"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:text="На главную" />
+    </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
