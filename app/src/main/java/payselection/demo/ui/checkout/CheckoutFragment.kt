@@ -58,11 +58,6 @@ class CheckoutFragment : Fragment(){
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        bottomSheet.dismiss()
-    }
-
     private fun showBottomDialog() {
         bottomSheet.show(requireActivity().supportFragmentManager, BottomSheetPay::class.java.canonicalName)
     }

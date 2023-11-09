@@ -57,6 +57,7 @@
                 android:id="@+id/editCardNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/gray" />
 
@@ -83,6 +84,7 @@
                 style="@style/customEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
                 android:layout_margin="0dp"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/gray" />
@@ -113,6 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/customEdit"
+                android:inputType="phone"
                 android:background="@android:color/transparent"
                 android:textColorHint="@color/gray" />
 

@@ -27,7 +27,7 @@ class CheckoutViewModel : ViewModel() {
     private val _cards = MutableLiveData<List<Card>>()
     val cards: LiveData<List<Card>> = _cards
 
-    var currentPosition = MutableLiveData<Int>(-1)
+    var currentPosition = MutableLiveData<Int?>(null)
 
     val uiCards = CombineLiveData(cards, currentPosition) { cards, position ->
         val cardList = generateUiCardList(cards.orEmpty(), position)
@@ -53,7 +53,7 @@ class CheckoutViewModel : ViewModel() {
     }
 
     val uiState: LiveData<State> = Transformations.map(currentPosition) {
-        if (it == (cards.value?.size ?: 0) || it == -1) State.ADD else State.PAY
+        if (it == null || it == -1) State.ADD else State.PAY
     }
 
     init {
@@ -61,7 +61,8 @@ class CheckoutViewModel : ViewModel() {
     }
 
     fun onCardSelected(position: Int) {
-        currentPosition.postValue(position)
+        if (position == (cards.value?.size ?: 0)) currentPosition.postValue(-1) else
+            currentPosition.postValue(position)
     }
 
     private fun generateUiCardList(cards: List<Card>, position: Int?): List<UiCard> {
@@ -69,7 +70,7 @@ class CheckoutViewModel : ViewModel() {
             UiCard(
                 title = "**${card.number.takeLast(4)}",
                 cardType = getPaymentSystem(card.number)?.image,
-                icon = R.drawable.ic_ready ,
+                icon = R.drawable.ic_ready,
                 backGround = if (index == position) R.drawable.bg_select_card else R.drawable.bg_card,
                 textColor = if (index == position) R.color.white else R.color.gray
             )
@@ -77,7 +78,8 @@ class CheckoutViewModel : ViewModel() {
     }
 
     private fun addAddCardToList(uiCardList: List<UiCard>, position: Int?): List<UiCard> {
-        val isAddSelect = position == uiCardList.size
+        println("VIVI position ${position}")
+        val isAddSelect = position == -1
         val newUiCardList = uiCardList.toMutableList().apply {
             add(
                 UiCard(
@@ -93,9 +95,12 @@ class CheckoutViewModel : ViewModel() {
     }
 
     fun addCard(number: String, date: String) {
-        var card = Card(number, date)
+        val card = Card(number, date)
         val cards = _cards.value ?: emptyList()
-        _cards.value = cards + card
+        _cards.value = cards.toMutableList().apply {
+            add(0, card)
+        }
+        currentPosition.postValue(0)
     }
 
     fun getPaymentSystem(cardNumber: String): CardType? {

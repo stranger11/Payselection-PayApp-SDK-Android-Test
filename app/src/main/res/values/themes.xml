@@ -16,7 +16,7 @@
 
     <style name="AppBottomSheetDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowSoftInputMode">adjustUnspecified</item>
         <item name="android:windowIsFloating">false</item>
     </style>
 

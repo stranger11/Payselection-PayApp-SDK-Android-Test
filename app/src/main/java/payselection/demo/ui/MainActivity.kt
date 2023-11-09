@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.add
 import payselection.demo.R
 import payselection.demo.databinding.ActivityMainBinding
 import payselection.demo.ui.checkout.CheckoutFragment
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() , ThreeDsDialogFragment.ThreeDSDialogLi
         setContentView(viewBinding.root)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.fragment_container, CheckoutFragment())
-            .addToBackStack(CheckoutFragment::class.java.canonicalName)
         fragmentTransaction.commit()
     }
 

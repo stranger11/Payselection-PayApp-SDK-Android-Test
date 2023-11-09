@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -25,6 +24,7 @@ import payselection.demo.ui.checkout.common.CardListener
 import payselection.demo.ui.checkout.common.State
 import payselection.demo.utils.ExpiryDateTextWatcher
 import payselection.demo.utils.FourDigitCardFormatWatcher
+import payselection.demo.utils.ThreeDigitWatcher
 import payselection.demo.utils.updateColor
 import payselection.payments.sdk.PaySelectionPaymentsSdk
 import payselection.payments.sdk.configuration.SdkConfiguration
@@ -83,6 +83,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
     private fun configureAnother() {
         binding.editCardNumber.addTextChangedListener(FourDigitCardFormatWatcher())
         binding.editCardData.addTextChangedListener(ExpiryDateTextWatcher())
+        binding.editCardCvv.addTextChangedListener(ThreeDigitWatcher())
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             binding.pay.text =
                 if (state == State.PAY) requireContext().getString(R.string.pay_card) else requireContext().getString(R.string.save_card)
@@ -92,14 +93,15 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
             }
         }
         viewModel.currentPosition.observe(viewLifecycleOwner) {
-            if (it == viewModel.cards.value?.size || it == null) {
+            if (it == -1 || it == null) {
                 binding.editCardNumber.setText("")
                 binding.editCardData.setText("")
+                binding.editCardCvv.setText("")
             } else {
                 binding.editCardNumber.setText(viewModel.cards.value?.get(it)?.number.orEmpty())
                 binding.editCardData.setText(viewModel.cards.value?.get(it)?.date.orEmpty())
+                if (it != 0) binding.editCardCvv.setText("")
             }
-            binding.editCardCvv.setText("")
             requireView().findFocus()?.clearFocus()
         }
     }
