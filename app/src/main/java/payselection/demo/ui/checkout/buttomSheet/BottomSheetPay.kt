@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import payselection.demo.R
 import payselection.demo.databinding.ButtomSheetBinding
 import payselection.demo.models.Card
-import payselection.demo.sdk.PaymentHelper
+import payselection.demo.sdk.PaymentService
 import payselection.demo.ui.checkout.CheckoutViewModel
 import payselection.demo.ui.checkout.adapter.CardAdapter
 import payselection.demo.ui.checkout.common.CardListener
@@ -32,11 +32,11 @@ import payselection.payments.sdk.ui.ThreeDsDialogFragment
 class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultListener {
 
     private lateinit var binding: ButtomSheetBinding
-    private val viewModel: CheckoutViewModel by activityViewModels()
+    private val viewModel: CheckoutViewModel by viewModels()
 
     private lateinit var cardsAdapter: CardAdapter
 
-    private lateinit var paymentHelper: PaymentHelper
+    private lateinit var paymentHelper: PaymentService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,7 +177,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
             "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e"
         val merchantId = "21044"
         val isTestMode = true
-        paymentHelper = PaymentHelper.getInstance(this)
+        paymentHelper = PaymentService.getInstance(this)
         paymentHelper.init(SdkConfiguration(apiKey, merchantId, isTestMode))
         paymentHelper.pay(card)
     }
@@ -194,7 +194,6 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
     }
 
     override fun onPaymentResult(result: PaymentResult?) {
-        println("VIIV chto")
         dismiss()
         viewModel.updateLoad(true)
         if (result != null) {

@@ -2,6 +2,8 @@ package payselection.demo.sdk
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import payselection.demo.models.Card
@@ -13,11 +15,10 @@ import payselection.payments.sdk.models.requests.pay.CustomerInfo
 import payselection.payments.sdk.models.requests.pay.PaymentData
 import payselection.payments.sdk.models.requests.pay.TransactionDetails
 import payselection.payments.sdk.models.results.pay.PaymentResult
-import payselection.payments.sdk.models.results.status.TransactionStatus
 
-class PaymentHelper() {
+class PaymentService() {
 
-    private lateinit var sdk: PaySelectionPaymentsSdk
+    private var sdk: PaySelectionPaymentsSdk? = null
     var paymentResult: PaymentResult? = null
     var card: Card? = null
 
@@ -32,7 +33,7 @@ class PaymentHelper() {
     }
 
     fun pay(paymentCard: Card) {
-        GlobalScope.launch(handler) {
+        CoroutineScope(Dispatchers.IO).launch(handler) {
             card = paymentCard
             val orderId = "SAM_SDK_3"
             testPay(orderId, paymentCard)
@@ -40,9 +41,8 @@ class PaymentHelper() {
     }
 
     private suspend fun testPay(orderId: String, card: Card) {
-        println("VIVI tyt")
         val dateParts = card.date.split('/')
-        sdk.pay(
+        sdk?.pay(
             orderId = orderId,
             description = "test payment",
             paymentData = PaymentData.create(
@@ -68,14 +68,12 @@ class PaymentHelper() {
                 country = "USA"
             ),
             rebillFlag = false
-        ).proceedResult(
+        )?.proceedResult(
             success = {
-                println("VIVI $paymentResultListener")
                 paymentResult = it
                 paymentResultListener?.onPaymentResult(it)
             },
             error = {
-                println("VIVI ne alo")
                 paymentResultListener?.onPaymentResult(null)
                 it.printStackTrace()
             }
@@ -83,7 +81,7 @@ class PaymentHelper() {
     }
 
     fun getTransaction() {
-        GlobalScope.launch(handler) {
+        CoroutineScope(Dispatchers.IO).launch(handler) {
             //Get this properties from PaymentResult
             val transactionId = paymentResult?.transactionId
             val transactionKey = paymentResult?.transactionSecretKey
@@ -92,7 +90,7 @@ class PaymentHelper() {
     }
 
     private suspend fun testGetTransaction(transactionKey: String, transactionId: String) {
-        sdk.getTransaction(transactionKey, transactionId).proceedResult(
+        sdk?.getTransaction(transactionKey, transactionId)?.proceedResult(
             success = {
                 println("Result $it")
             },
@@ -104,10 +102,10 @@ class PaymentHelper() {
 
     companion object {
         private val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            PaymentHelper()
+            PaymentService()
         }
 
-        fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentHelper {
+        fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentService {
             if (paymentResultListener != null) instance.paymentResultListener = paymentResultListener
             return instance
         }

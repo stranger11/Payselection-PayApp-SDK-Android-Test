@@ -12,7 +12,7 @@ class ExpiryDateTextWatcher : TextWatcher {
         if (!isInputCorrect(
                 s,
                 TOTAL_SYMBOLS,
-                DIVIDER_MODULO,
+                DIVIDER_INDEX,
                 DIVIDER
             )
         ) {
@@ -71,7 +71,7 @@ class ExpiryDateTextWatcher : TextWatcher {
         private const val DIVIDER = '/'
         private const val TOTAL_SYMBOLS = 5
         private const val TOTAL_DIGITS = 4
-        private const val DIVIDER_MODULO = 3
-        private const val DIVIDER_POSITION = DIVIDER_MODULO - 1
+        private const val DIVIDER_INDEX = 3
+        private const val DIVIDER_POSITION = DIVIDER_INDEX - 1
     }
 }

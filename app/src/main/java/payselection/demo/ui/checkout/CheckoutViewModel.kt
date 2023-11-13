@@ -11,7 +11,9 @@ import payselection.demo.ui.checkout.common.CardType
 import payselection.demo.ui.checkout.common.State
 import payselection.demo.utils.CombineLiveData
 import payselection.demo.utils.CombineTripleLiveData
-import java.util.Calendar
+import payselection.demo.utils.validCardDate
+import payselection.demo.utils.validCardNumber
+import payselection.demo.utils.validCvv
 
 
 class CheckoutViewModel : ViewModel() {
@@ -51,9 +53,8 @@ class CheckoutViewModel : ViewModel() {
         if (it == null || it == -1) State.ADD else State.PAY
     }
 
-    fun onCardSelected(position: Int) {
-        if (position == (cards.value?.size ?: 0)) currentPosition.postValue(-1) else
-            currentPosition.postValue(position)
+    fun onCardSelected(cardIndex: Int) {
+        currentPosition.postValue(if (cardIndex == (cards.value?.size ?: 0)) -1 else cardIndex)
     }
 
     private fun generateUiCardList(cards: List<Card>, position: Int?): List<UiCard> {
@@ -102,56 +103,18 @@ class CheckoutViewModel : ViewModel() {
 
     fun setCardDate(date: String) {
         cardDate.postValue(date)
-        validCardDate(date)
+        _isDataValid.postValue(validCardDate(date))
     }
 
     fun setCardCvv(cvv: String) {
         cardCvv.postValue(cvv)
-        validCvv(cvv)
+        _isCvvValid.postValue(validCvv(cvv))
     }
 
     fun setCardNumber(cardNumber: String) {
         val extractCardNumber = cardNumber.filter { it.isDigit() }
         this.cardNumber.postValue(extractCardNumber)
-        validCardNumber(extractCardNumber)
-    }
-
-
-    private fun validCardDate(date: String) {
-        val isValid =
-            if (date.length == 5 && date.indexOf('/') == 2) {
-                val month = date.substring(0, 2).toInt()
-                val year = date.substring(3).toInt()
-                val allowedDate = Calendar.getInstance()
-                allowedDate.set(2022, 1, 1)
-                val inputDate = Calendar.getInstance()
-                inputDate.set(2000 + year, month, 1)
-
-                month in 1..12 && inputDate >= allowedDate
-            } else {
-                false
-            }
-        _isDataValid.postValue(isValid || date.isEmpty())
-    }
-
-    private fun validCvv(cvv: String) {
-        _isCvvValid.postValue(cvv.length == 3 || cvv.isEmpty())
-    }
-
-    private fun validCardNumber(cardNumber: String) {
-        var sum = 0
-        for ((index, char) in cardNumber.withIndex()) {
-            var digit = Character.digit(char, 10)
-            if (index % 2 == 0) {
-                digit *= 2
-                if (digit > 9) {
-                    digit -= 9
-                }
-            }
-            sum += digit
-        }
-        val isNumberValid = sum % 10 == 0 && cardNumber.length == 16 || cardNumber.isEmpty()
-        _isNumberValid.postValue(isNumberValid)
+        _isNumberValid.postValue(validCardNumber(extractCardNumber))
     }
 
     fun updateLoad(isLoad: Boolean) {

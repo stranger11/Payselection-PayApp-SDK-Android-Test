@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import payselection.demo.R
 import payselection.demo.databinding.FSuccessBinding
-import payselection.demo.sdk.PaymentHelper
+import payselection.demo.sdk.PaymentService
 
 class SuccessFragment : Fragment() {
 
@@ -23,7 +23,7 @@ class SuccessFragment : Fragment() {
     }
 
     private fun configurePaymentUI(){
-        val paymentHelper = PaymentHelper.getInstance()
+        val paymentHelper = PaymentService.getInstance()
         viewBinding.payCard.text = resources.getString(R.string.paid_card_format, paymentHelper.card?.number?.takeLast(4))
         viewBinding.navButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager

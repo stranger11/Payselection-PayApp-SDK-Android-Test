@@ -7,7 +7,7 @@ class FourDigitCardFormatWatcher : TextWatcher {
     override fun onTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
     override fun afterTextChanged(s: Editable) {
-        if (!isInputCorrect(s, TOTAL_SYMBOLS, DIVIDER_MODULO, DIVIDER)) {
+        if (!isInputCorrect(s, TOTAL_SYMBOLS, DIVIDER_INDEX, DIVIDER)) {
             s.replace(0, s.length, getDigitArray(s, TOTAL_DIGITS)?.let { buildCorrectString(it, DIVIDER_POSITION, DIVIDER) });
         }
     }
@@ -56,7 +56,7 @@ class FourDigitCardFormatWatcher : TextWatcher {
         private const val DIVIDER = ' '
         private const val TOTAL_SYMBOLS = 19
         private const val TOTAL_DIGITS = 16
-        private const val DIVIDER_MODULO = 5
-        private const val DIVIDER_POSITION = DIVIDER_MODULO - 1
+        private const val DIVIDER_INDEX = 5
+        private const val DIVIDER_POSITION = DIVIDER_INDEX - 1
     }
 }
