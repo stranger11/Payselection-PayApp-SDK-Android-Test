@@ -143,6 +143,7 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/payCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
@@ -297,7 +298,7 @@
                     android:fontFamily="@font/raleway_700"
                     android:fontFeatureSettings="pnum, lnum"
                     android:gravity=""
-                    android:text="@string/price_0"
+                    android:text="@string/price_446"
                     android:textColor="@color/light_blue_dark"
                     android:textSize="14sp" />
             </LinearLayout>

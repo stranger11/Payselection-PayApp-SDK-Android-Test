@@ -18,6 +18,7 @@
 
     <string name="price_297">297 ₽</string>
     <string name="price_0">0 ₽</string>
+    <string name="price_446">446 ₽</string>
 
 
 
@@ -56,6 +57,7 @@
     <string name="express_delivery_address">Россия, г. Москва, ул. Цветной бульвар, д. 30, стр. 1</string>
     <string name="paid">Оплачено</string>
     <string name="paid_card">Картой онлайн masterCard **** 3456</string>
+    <string name="paid_card_format">Картой онлайн masterCard **** %s</string>
 
 
 </resources>

@@ -19,6 +19,7 @@ import payselection.demo.ui.checkout.adapter.CardAdapter
 import payselection.demo.ui.checkout.common.CardListener
 import payselection.demo.ui.checkout.common.PaymentResultListener
 import payselection.demo.ui.checkout.common.State
+import payselection.demo.ui.error.ErrorFragment
 import payselection.demo.utils.ExpiryDateTextWatcher
 import payselection.demo.utils.FourDigitCardFormatWatcher
 import payselection.demo.utils.ThreeDigitWatcher
@@ -176,13 +177,12 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
             "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e"
         val merchantId = "21044"
         val isTestMode = true
-        paymentHelper = PaymentHelper(this)
+        paymentHelper = PaymentHelper.getInstance(this)
         paymentHelper.init(SdkConfiguration(apiKey, merchantId, isTestMode))
         paymentHelper.pay(card)
     }
 
     private fun show3DS(url: String) {
-        dismiss()
         // Открываем 3ds форму
         ThreeDsDialogFragment
             .newInstance(url)
@@ -193,9 +193,18 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
         viewModel.onCardSelected(position)
     }
 
-    override fun onPaymentResult(result: PaymentResult) {
+    override fun onPaymentResult(result: PaymentResult?) {
+        println("VIIV chto")
+        dismiss()
         viewModel.updateLoad(true)
-        show3DS(result.redirectUrl)
+        if (result != null) {
+            show3DS(result.redirectUrl)
+        }else {
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            fragmentTransaction.add(R.id.fragment_container, ErrorFragment())
+                .addToBackStack(ErrorFragment::class.java.canonicalName)
+            fragmentTransaction.commit()
+        }
     }
 
     companion object {

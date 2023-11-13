@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import payselection.demo.R
 import payselection.demo.databinding.FSuccessBinding
+import payselection.demo.sdk.PaymentHelper
 
 class SuccessFragment : Fragment() {
 
@@ -17,6 +19,12 @@ class SuccessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configurePaymentUI()
+    }
+
+    private fun configurePaymentUI(){
+        val paymentHelper = PaymentHelper.getInstance()
+        viewBinding.payCard.text = resources.getString(R.string.paid_card_format, paymentHelper.card?.number?.takeLast(4))
         viewBinding.navButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             fragmentManager.popBackStack()

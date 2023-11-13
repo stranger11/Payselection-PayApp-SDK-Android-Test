@@ -19,7 +19,7 @@
             android:id="@+id/image"
             android:layout_width="61.5dp"
             android:layout_height="61dp"
-            android:background="@drawable/image_card_1" />
+            android:src="@drawable/image_card_1" />
 
     </RelativeLayout>
 

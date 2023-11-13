@@ -12,10 +12,16 @@ import payselection.payments.sdk.models.requests.pay.CardDetails
 import payselection.payments.sdk.models.requests.pay.CustomerInfo
 import payselection.payments.sdk.models.requests.pay.PaymentData
 import payselection.payments.sdk.models.requests.pay.TransactionDetails
+import payselection.payments.sdk.models.results.pay.PaymentResult
+import payselection.payments.sdk.models.results.status.TransactionStatus
 
-class PaymentHelper(private var paymentResultListener: PaymentResultListener) {
+class PaymentHelper() {
 
     private lateinit var sdk: PaySelectionPaymentsSdk
+    var paymentResult: PaymentResult? = null
+    var card: Card? = null
+
+    private var paymentResultListener: PaymentResultListener?= null
 
     fun init(sdkConfiguration: SdkConfiguration) {
         sdk = PaySelectionPaymentsSdk.getInstance(sdkConfiguration)
@@ -25,14 +31,16 @@ class PaymentHelper(private var paymentResultListener: PaymentResultListener) {
         Log.e("SdkHelper", "Caught $exception")
     }
 
-    fun pay(card: Card) {
+    fun pay(paymentCard: Card) {
         GlobalScope.launch(handler) {
+            card = paymentCard
             val orderId = "SAM_SDK_3"
-            testPay(orderId, card)
+            testPay(orderId, paymentCard)
         }
     }
 
     private suspend fun testPay(orderId: String, card: Card) {
+        println("VIVI tyt")
         val dateParts = card.date.split('/')
         sdk.pay(
             orderId = orderId,
@@ -62,24 +70,28 @@ class PaymentHelper(private var paymentResultListener: PaymentResultListener) {
             rebillFlag = false
         ).proceedResult(
             success = {
-                paymentResultListener.onPaymentResult(it)
+                println("VIVI $paymentResultListener")
+                paymentResult = it
+                paymentResultListener?.onPaymentResult(it)
             },
             error = {
+                println("VIVI ne alo")
+                paymentResultListener?.onPaymentResult(null)
                 it.printStackTrace()
             }
         )
     }
 
-    private fun getTransaction() {
+    fun getTransaction() {
         GlobalScope.launch(handler) {
             //Get this properties from PaymentResult
-            val transactionId = "PS00000300026126"
-            val transactionKey = "d58f99b6-6c6d-4186-9727-7ee5115ca288"
-            testGetTransaction(transactionKey, transactionId)
+            val transactionId = paymentResult?.transactionId
+            val transactionKey = paymentResult?.transactionSecretKey
+            testGetTransaction(transactionKey.orEmpty(), transactionId.orEmpty())
         }
     }
 
-    suspend fun testGetTransaction(transactionKey: String, transactionId: String) {
+    private suspend fun testGetTransaction(transactionKey: String, transactionId: String) {
         sdk.getTransaction(transactionKey, transactionId).proceedResult(
             success = {
                 println("Result $it")
@@ -88,5 +100,16 @@ class PaymentHelper(private var paymentResultListener: PaymentResultListener) {
                 it.printStackTrace()
             }
         )
+    }
+
+    companion object {
+        private val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            PaymentHelper()
+        }
+
+        fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentHelper {
+            if (paymentResultListener != null) instance.paymentResultListener = paymentResultListener
+            return instance
+        }
     }
 }
