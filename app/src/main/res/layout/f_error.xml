@@ -38,7 +38,7 @@
         android:fontFeatureSettings="pnum, lnum"
         android:lineSpacingExtra="1sp"
         android:layout_marginTop="24dp"
-        android:text="Недостаточно средств"
+        android:text="Что то пошло не так"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_error" />
@@ -59,21 +59,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/error_title" />
 
-    <TextView
-        android:id="@+id/error_disc2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/raleway_500"
-        android:fontFeatureSettings="pnum, lnum"
-        android:gravity="center"
-        android:lineSpacingExtra="1sp"
-        android:text="ID 3872638277364"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/error_desc" />
+<!--    <TextView-->
+<!--        android:id="@+id/error_disc2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:fontFamily="@font/raleway_500"-->
+<!--        android:fontFeatureSettings="pnum, lnum"-->
+<!--        android:gravity="center"-->
+<!--        android:lineSpacingExtra="1sp"-->
+<!--        android:text="ID 3872638277364"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/error_desc" />-->
 
     <Button
         android:id="@+id/nav_button"
@@ -86,7 +86,7 @@
         android:background="@drawable/bg_button"
         android:fontFamily="@font/raleway_700"
         android:fontFeatureSettings="pnum, lnum"
-        android:text="На главную"
+        android:text="@string/navigate_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

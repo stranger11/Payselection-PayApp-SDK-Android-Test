@@ -28,7 +28,7 @@ class ExpiryDateTextWatcher : TextWatcher {
 
     private fun isInputCorrect(s: Editable, totalSymbols: Int, dividerModulo: Int, divider: Char): Boolean {
         var isCorrect = s.length <= totalSymbols // check size of entered string
-        for (i in 0 until s.length) { // check that every element is right
+        for (i in s.indices) { // check that every element is right
             isCorrect = if (i > 0 && (i + 1) % dividerModulo == 0) {
                 isCorrect and (divider == s[i])
             } else {

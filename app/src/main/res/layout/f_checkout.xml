@@ -25,7 +25,7 @@
                 android:id="@+id/title"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="@string/page_title"
+                android:text="@string/checkout_title"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
                 android:textSize="18sp"
@@ -53,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/totalPrice"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/price"
@@ -67,7 +67,7 @@
                     android:id="@+id/totalPriceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/converted_price"
+                    android:text="@string/product_1_price"
                     android:fontFamily="@font/raleway_700"
                     android:fontFeatureSettings="pnum, lnum"
                     android:textSize="14sp"
@@ -85,7 +85,7 @@
 
                 <TextView
                     android:id="@+id/delivery"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/delivery"
@@ -99,7 +99,7 @@
                     android:id="@+id/deliveryValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/converted_price"
+                    android:text="@string/product_1_price"
                     android:fontFamily="@font/raleway_700"
                     android:fontFeatureSettings="pnum, lnum"
                     android:textSize="14sp"
@@ -118,7 +118,7 @@
 
                 <TextView
                     android:id="@+id/nds"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/nds"
@@ -132,7 +132,7 @@
                     android:id="@+id/ndsValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/converted_price"
+                    android:text="@string/product_1_price"
                     android:fontFamily="@font/raleway_700"
                     android:fontFeatureSettings="pnum, lnum"
                     android:textSize="14sp"
@@ -151,7 +151,7 @@
 
                 <TextView
                     android:id="@+id/sale"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/sale"
@@ -165,7 +165,7 @@
                     android:id="@+id/saleValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/converted_price"
+                    android:text="@string/product_1_price"
                     android:fontFamily="@font/raleway_700"
                     android:fontFeatureSettings="pnum, lnum"
                     android:textSize="14sp"
@@ -184,7 +184,7 @@
 
                 <TextView
                     android:id="@+id/total"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/total"
@@ -197,7 +197,7 @@
                     android:id="@+id/totalValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/converted_price"
+                    android:text="@string/product_1_price"
                     android:fontFamily="@font/raleway_700"
                     android:fontFeatureSettings="pnum, lnum"
                     android:textSize="24sp"

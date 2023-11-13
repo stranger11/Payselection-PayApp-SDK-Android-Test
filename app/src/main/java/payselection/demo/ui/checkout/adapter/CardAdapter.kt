@@ -1,25 +1,18 @@
 package payselection.demo.ui.checkout.adapter
 
-import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import payselection.demo.R
-import payselection.demo.models.UiCard
 import payselection.demo.databinding.ICardBinding
+import payselection.demo.models.UiCard
 import payselection.demo.ui.checkout.common.CardListener
 
 
-class CardAdapter(private val cardListener: CardListener, private val context: Context) : RecyclerView.Adapter<CardAdapter.CardHolder>() {
+class CardAdapter(private val cardListener: CardListener) : RecyclerView.Adapter<CardAdapter.CardHolder>() {
 
-    private var list: List<UiCard> = listOf(
-        UiCard(
-            title = context.getString(R.string.card_adding), cardType = null, R.drawable.ic_plus, R.drawable.bg_card,
-            R.color.gray
-        )
-    )
+    private var cards: List<UiCard> = emptyList()
 
     inner class CardHolder(private val view: ICardBinding) : RecyclerView.ViewHolder(view.root) {
         init {
@@ -28,18 +21,17 @@ class CardAdapter(private val cardListener: CardListener, private val context: C
             }
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
         fun bind(card: UiCard) {
             with(view) {
-                cardNumber.setText(card.title)
+                cardNumber.text = card.title
+                cardNumber.setTextColor(ContextCompat.getColor(root.context, card.textColor))
                 if (card.cardType != null) {
                     imageCardType.setImageResource(card.cardType)
                 } else {
                     imageCardType.setImageDrawable(null)
                 }
                 imageAdd.setImageResource(card.icon)
-                view.root.setBackgroundResource(card.backGround)
-                view.cardNumber.setTextColor(context.getColor(card.textColor))
+                root.setBackgroundResource(card.backGround)
             }
         }
     }
@@ -55,13 +47,29 @@ class CardAdapter(private val cardListener: CardListener, private val context: C
     }
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(cards[position])
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = cards.size
 
     fun updateData(listItem: List<UiCard>) {
-        list = listItem
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(CardDiffCallback(cards, listItem))
+        cards = listItem
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class CardDiffCallback(private val oldList: List<UiCard>, private val newList: List<UiCard>) : DiffUtil.Callback() {
+
+        override fun getOldListSize() = oldList.size
+
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].title == newList[newItemPosition].title
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }

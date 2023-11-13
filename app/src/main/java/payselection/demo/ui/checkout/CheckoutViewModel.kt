@@ -1,28 +1,20 @@
 package payselection.demo.ui.checkout
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import payselection.demo.R
 import payselection.demo.models.Card
-import payselection.demo.models.Product
 import payselection.demo.models.UiCard
 import payselection.demo.ui.checkout.common.CardType
 import payselection.demo.ui.checkout.common.State
 import payselection.demo.utils.CombineLiveData
 import payselection.demo.utils.CombineTripleLiveData
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
+import java.util.Calendar
 
 
 class CheckoutViewModel : ViewModel() {
-
-    private val _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<Product>> = _products
 
     private val _cards = MutableLiveData<List<Card>>()
     val cards: LiveData<List<Card>> = _cards
@@ -34,6 +26,9 @@ class CheckoutViewModel : ViewModel() {
         addAddCardToList(cardList, position)
     }
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private val _isDataValid = MutableLiveData<Boolean>()
     val isDataValid: LiveData<Boolean> = _isDataValid
 
@@ -43,21 +38,17 @@ class CheckoutViewModel : ViewModel() {
     private val _isCvvValid = MutableLiveData<Boolean>()
     val isCvvValid: LiveData<Boolean> = _isCvvValid
 
-    val _cardDate = MutableLiveData<String>()
+    val cardDate = MutableLiveData<String>()
     val cardNumber = MutableLiveData<String>()
     val cardCvv = MutableLiveData<String>()
 
     val isEnable = CombineTripleLiveData(_isDataValid, _isNumberValid, _isCvvValid) { isDataValid, isNumberValid, isCvvValid ->
-        isDataValid == true && isNumberValid == true && isCvvValid == true && _cardDate.value?.isEmpty() == false && cardNumber.value?.isEmpty() == false
+        isDataValid == true && isNumberValid == true && isCvvValid == true && cardDate.value?.isEmpty() == false && cardNumber.value?.isEmpty() == false
                 && cardCvv.value?.isEmpty() == false
     }
 
     val uiState: LiveData<State> = Transformations.map(currentPosition) {
         if (it == null || it == -1) State.ADD else State.PAY
-    }
-
-    init {
-        _products.postValue(getProducts())
     }
 
     fun onCardSelected(position: Int) {
@@ -69,7 +60,7 @@ class CheckoutViewModel : ViewModel() {
         return cards.mapIndexed { index, card ->
             UiCard(
                 title = "**${card.number.takeLast(4)}",
-                cardType = getPaymentSystem(card.number)?.image,
+                cardType = getPaymentSystem(card.number.filter { it.isDigit() })?.image,
                 icon = R.drawable.ic_ready,
                 backGround = if (index == position) R.drawable.bg_select_card else R.drawable.bg_card,
                 textColor = if (index == position) R.color.white else R.color.gray
@@ -78,7 +69,6 @@ class CheckoutViewModel : ViewModel() {
     }
 
     private fun addAddCardToList(uiCardList: List<UiCard>, position: Int?): List<UiCard> {
-        println("VIVI position ${position}")
         val isAddSelect = position == -1
         val newUiCardList = uiCardList.toMutableList().apply {
             add(
@@ -103,27 +93,15 @@ class CheckoutViewModel : ViewModel() {
         currentPosition.postValue(0)
     }
 
-    fun getPaymentSystem(cardNumber: String): CardType? {
-        val extractCardNumber = cardNumber.filter { it.isDigit() }
-
-        return when {
-            extractCardNumber.matches("^5[1-5][0-9]{14}$".toRegex()) -> CardType.MASTERCARD
-            extractCardNumber.matches("^4[0-9]{12}(?:[0-9]{3})?$".toRegex()) -> CardType.VISA
-            extractCardNumber.matches("^2[0-9]{15}$".toRegex()) -> CardType.MIR
-            else -> null
-        }
-    }
-
-    private fun getProducts(): List<Product> {
-        return listOf(
-            Product(name = "Белый пончик", description = "Металл, 13 см", price = 99, image = R.drawable.image_card_1),
-            Product(name = "Черная сфера", description = "Гранит, 10 см", price = 49, image = R.drawable.image_card_2),
-            Product(name = "Стеклянный куб", description = "Стекло, 20 см", price = 149, image = R.drawable.image_card_3)
-        )
+    fun getPaymentSystem(cardNumber: String): CardType? = when {
+        cardNumber.matches(MASTERCARD_REGEX) -> CardType.MASTERCARD
+        cardNumber.matches(VISA_REGEX) -> CardType.VISA
+        cardNumber.matches(MIR_REGEX) -> CardType.MIR
+        else -> null
     }
 
     fun setCardDate(date: String) {
-        _cardDate.postValue(date)
+        cardDate.postValue(date)
         validCardDate(date)
     }
 
@@ -139,19 +117,20 @@ class CheckoutViewModel : ViewModel() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun validCardDate(date: String) {
-        val isValid = try {
+        val isValid =
             if (date.length == 5 && date.indexOf('/') == 2) {
-                val allowedDate = LocalDate.parse("01/01/22", DateTimeFormatter.ofPattern("dd/MM/yy"))
-                val inputDate = LocalDate.parse("01/$date", DateTimeFormatter.ofPattern("dd/MM/yy"))
-                allowedDate.isEqual(inputDate) || allowedDate.isBefore(inputDate)
+                val month = date.substring(0, 2).toInt()
+                val year = date.substring(3).toInt()
+                val allowedDate = Calendar.getInstance()
+                allowedDate.set(2022, 1, 1)
+                val inputDate = Calendar.getInstance()
+                inputDate.set(2000 + year, month, 1)
+
+                month in 1..12 && inputDate >= allowedDate
             } else {
                 false
             }
-        } catch (e: DateTimeParseException) {
-            false
-        }
         _isDataValid.postValue(isValid || date.isEmpty())
     }
 
@@ -173,5 +152,15 @@ class CheckoutViewModel : ViewModel() {
         }
         val isNumberValid = sum % 10 == 0 && cardNumber.length == 16 || cardNumber.isEmpty()
         _isNumberValid.postValue(isNumberValid)
+    }
+
+    fun updateLoad(isLoad: Boolean) {
+        _isLoading.postValue(isLoad)
+    }
+
+    companion object {
+        val MASTERCARD_REGEX = Regex("^5[1-5][0-9]{14}$")
+        val VISA_REGEX = Regex("^4[0-9]{12}(?:[0-9]{3})?$")
+        val MIR_REGEX = Regex("^2[0-9]{15}$")
     }
 }

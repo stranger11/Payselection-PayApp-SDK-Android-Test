@@ -1,53 +1,41 @@
 package payselection.demo.ui.checkout.buttomSheet
 
-import android.os.Build
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import payselection.demo.R
 import payselection.demo.databinding.ButtomSheetBinding
 import payselection.demo.models.Card
+import payselection.demo.sdk.PaymentHelper
 import payselection.demo.ui.checkout.CheckoutViewModel
 import payselection.demo.ui.checkout.adapter.CardAdapter
 import payselection.demo.ui.checkout.common.CardListener
+import payselection.demo.ui.checkout.common.PaymentResultListener
 import payselection.demo.ui.checkout.common.State
 import payselection.demo.utils.ExpiryDateTextWatcher
 import payselection.demo.utils.FourDigitCardFormatWatcher
 import payselection.demo.utils.ThreeDigitWatcher
 import payselection.demo.utils.updateColor
-import payselection.payments.sdk.PaySelectionPaymentsSdk
 import payselection.payments.sdk.configuration.SdkConfiguration
-import payselection.payments.sdk.models.requests.pay.CardDetails
-import payselection.payments.sdk.models.requests.pay.CustomerInfo
-import payselection.payments.sdk.models.requests.pay.PaymentData
-import payselection.payments.sdk.models.requests.pay.TransactionDetails
+import payselection.payments.sdk.models.results.pay.PaymentResult
 import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
-class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
+class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultListener {
+
     private lateinit var binding: ButtomSheetBinding
-    private val viewModel: CheckoutViewModel by viewModels()
+    private val viewModel: CheckoutViewModel by activityViewModels()
 
     private lateinit var cardsAdapter: CardAdapter
 
-    private lateinit var sdk: PaySelectionPaymentsSdk
-
-    private val handler = CoroutineExceptionHandler { context, exception ->
-        requireActivity().runOnUiThread {
-            Toast.makeText(requireContext(), "Caught $exception", Toast.LENGTH_LONG).show()
-        }
-    }
+    private lateinit var paymentHelper: PaymentHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,16 +51,16 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureError()
         configureViewPager()
+        configureError()
+        configureButton()
         configureAnother()
     }
 
     private fun configureViewPager() = with(binding) {
-        cardsAdapter = CardAdapter(this@BottomSheetPay, requireContext())
+        cardsAdapter = CardAdapter(this@BottomSheetPay)
         cardsPager.adapter = cardsAdapter
         cardsPager.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         viewModel.uiCards.observe(viewLifecycleOwner) {
@@ -80,144 +68,121 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
         }
     }
 
-    private fun configureAnother() {
-        binding.editCardNumber.addTextChangedListener(FourDigitCardFormatWatcher())
-        binding.editCardData.addTextChangedListener(ExpiryDateTextWatcher())
-        binding.editCardCvv.addTextChangedListener(ThreeDigitWatcher())
-        viewModel.uiState.observe(viewLifecycleOwner) { state ->
-            binding.pay.text =
-                if (state == State.PAY) requireContext().getString(R.string.pay_card) else requireContext().getString(R.string.save_card)
-            binding.pay.setOnClickListener {
-                if (state == State.ADD) viewModel.addCard(binding.editCardNumber.text.toString(), binding.editCardData.text.toString())
-                else pay(Card(viewModel.cardNumber.value.orEmpty(), viewModel._cardDate.value.orEmpty(), viewModel.cardCvv.value.orEmpty()))
+    private fun configureButton() {
+        with(binding) {
+            viewModel.isEnable.observe(viewLifecycleOwner) {
+                pay.isEnabled = it
             }
-        }
-        viewModel.currentPosition.observe(viewLifecycleOwner) {
-            if (it == -1 || it == null) {
-                binding.editCardNumber.setText("")
-                binding.editCardData.setText("")
-                binding.editCardCvv.setText("")
-            } else {
-                binding.editCardNumber.setText(viewModel.cards.value?.get(it)?.number.orEmpty())
-                binding.editCardData.setText(viewModel.cards.value?.get(it)?.date.orEmpty())
-                if (it != 0) binding.editCardCvv.setText("")
+            viewModel.uiState.observe(viewLifecycleOwner) { state ->
+                pay.text =
+                    if (state == State.PAY) requireContext().getString(R.string.pay_card) else requireContext().getString(R.string.save_card)
+                pay.setOnClickListener {
+                    when (state) {
+                        State.ADD -> viewModel.addCard(editCardNumber.text.toString(), editCardData.text.toString())
+                        else -> pay(Card(viewModel.cardNumber.value.orEmpty(), viewModel.cardDate.value.orEmpty(), viewModel.cardCvv.value.orEmpty()))
+                    }
+                }
             }
-            requireView().findFocus()?.clearFocus()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun configureError() {
-        binding.editCardCvv.doOnTextChanged { text, start, before, count ->
-            viewModel.setCardCvv(text.toString())
-        }
+    private fun configureAnother() {
+        with(binding) {
+            editCardNumber.addTextChangedListener(FourDigitCardFormatWatcher())
+            editCardData.addTextChangedListener(ExpiryDateTextWatcher())
+            editCardCvv.addTextChangedListener(ThreeDigitWatcher())
 
-        binding.editCardData.doOnTextChanged { text, start, before, count ->
-            viewModel.setCardDate(text.toString())
-        }
+            viewModel.currentPosition.observe(viewLifecycleOwner) { currentPosition ->
+                if (currentPosition == -1 || currentPosition == null) {
+                    editCardNumber.setText(EMPTY_STRING)
+                    editCardData.setText(EMPTY_STRING)
+                    editCardCvv.setText(EMPTY_STRING)
+                } else {
+                    val cards = viewModel.cards.value
+                    editCardNumber.setText(cards?.get(currentPosition)?.number.orEmpty())
+                    editCardData.setText(cards?.get(currentPosition)?.date.orEmpty())
+                    if (currentPosition != 0) editCardCvv.setText(EMPTY_STRING)
+                }
+                requireView().findFocus()?.clearFocus()
+            }
 
-        binding.editCardNumber.doOnTextChanged { text, start, before, count ->
-            viewModel.setCardNumber(text.toString())
-            if (text?.length == 19) {
-                binding.cardNumber.endIconDrawable = viewModel.getPaymentSystem(text.toString())
-                    ?.let { ContextCompat.getDrawable(requireContext(), it.imageWithLine) }
+            viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                pay.isEnabled = isLoading.not()
             }
         }
-        viewModel.isCvvValid.observe(viewLifecycleOwner) { isValid ->
-            binding.cardCvv.updateColor(
-                requireContext(),
-                !isValid,
-                requireContext().getString(R.string.cvv),
-                requireContext().getString(R.string.error_cvv)
-            )
-            binding.editCardCvv.updateColor(requireContext(), !isValid)
-        }
+    }
 
-        viewModel.isDataValid.observe(viewLifecycleOwner) { isValid ->
-            binding.cardData.updateColor(
-                requireContext(),
-                !isValid,
-                requireContext().getString(R.string.dd_mm),
-                requireContext().getString(R.string.error_date)
-            )
-            binding.editCardData.updateColor(requireContext(), !isValid)
-        }
+    private fun configureError() {
+        with(binding) {
+            editCardCvv.doOnTextChanged { text, start, before, count ->
+                viewModel.setCardCvv(text.toString())
+            }
 
-        viewModel.isNumberValid.observe(viewLifecycleOwner) { isValid ->
-            binding.cardNumber.updateColor(
-                requireContext(),
-                !isValid,
-                requireContext().getString(R.string.card_number),
-                requireContext().getString(R.string.error_number)
-            )
-            binding.editCardNumber.updateColor(requireContext(), !isValid)
-            binding.cardNumber.isEndIconVisible = isValid && !viewModel.cardNumber.value.isNullOrEmpty()
-        }
+            editCardData.doOnTextChanged { text, start, before, count ->
+                viewModel.setCardDate(text.toString())
+            }
 
-        viewModel.isEnable.observe(viewLifecycleOwner) {
-            binding.pay.isEnabled = it
+            editCardNumber.doOnTextChanged { text, start, before, count ->
+                viewModel.setCardNumber(text.toString())
+                if (text?.length == 19) {
+                    binding.cardNumber.endIconDrawable = viewModel.getPaymentSystem(text.filter { it.isDigit() }.toString())
+                        ?.let { ContextCompat.getDrawable(requireContext(), it.imageWithLine) }
+                }
+            }
+
+            viewModel.isCvvValid.observe(viewLifecycleOwner) { isValid ->
+                cardCvv.updateColor(
+                    requireContext(),
+                    !isValid,
+                    requireContext().getString(R.string.cvv),
+                    requireContext().getString(R.string.error_cvv)
+                )
+                editCardCvv.updateColor(requireContext(), !isValid)
+            }
+
+            viewModel.isDataValid.observe(viewLifecycleOwner) { isValid ->
+                cardData.updateColor(
+                    requireContext(),
+                    !isValid,
+                    requireContext().getString(R.string.dd_mm),
+                    requireContext().getString(R.string.error_date)
+                )
+                editCardData.updateColor(requireContext(), !isValid)
+            }
+
+            viewModel.isNumberValid.observe(viewLifecycleOwner) { isValid ->
+                cardNumber.updateColor(
+                    requireContext(),
+                    !isValid,
+                    requireContext().getString(R.string.card_number),
+                    requireContext().getString(R.string.error_number)
+                )
+                editCardNumber.updateColor(requireContext(), !isValid)
+                cardNumber.isEndIconVisible = isValid && !viewModel.cardNumber.value.isNullOrEmpty()
+            }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        binding.editCardNumber.setText(EMPTY_STRING)
+        binding.editCardData.setText(EMPTY_STRING)
+        binding.editCardCvv.setText(EMPTY_STRING)
     }
 
     private fun pay(card: Card) {
-        sdk = PaySelectionPaymentsSdk.getInstance(
-            SdkConfiguration(
-                "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e",
-                "21044",
-                true
-            )
-        )
-        makePay(card)
-    }
-
-    private fun makePay(card: Card) {
-        GlobalScope.launch(handler) {
-            val orderId = "SAM_SDK_3"
-            testPay(orderId, card)
-        }
-    }
-
-    private suspend fun testPay(orderId: String, card: Card) {
-        val dateParts = card.date.split('/')
-        sdk.pay(
-            orderId = orderId,
-            description = "test payment",
-            paymentData = PaymentData.create(
-                transactionDetails = TransactionDetails(
-                    amount = "10",
-                    currency = "RUB"
-                ),
-                cardDetails = CardDetails(
-                    cardholderName = "TEST CARD",
-                    cardNumber = card.number,
-                    cvc = card.cvv.orEmpty(),
-                    expMonth = dateParts[0],
-                    expYear = dateParts[1]
-                )
-            ),
-            customerInfo = CustomerInfo(
-                email = "user@example.com",
-                phone = "+19991231212",
-                language = "en",
-                address = "string",
-                town = "string",
-                zip = "string",
-                country = "USA"
-            ),
-            rebillFlag = false
-        ).proceedResult(
-            success = {
-                println("VIVI vse cruto")
-                show3DS(it.redirectUrl)
-            },
-            error = {
-                println("VIVI vse ploho ${it.printStackTrace()}")
-                it.printStackTrace()
-            }
-        )
+        viewModel.updateLoad(true)
+        val apiKey =
+            "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e"
+        val merchantId = "21044"
+        val isTestMode = true
+        paymentHelper = PaymentHelper(this)
+        paymentHelper.init(SdkConfiguration(apiKey, merchantId, isTestMode))
+        paymentHelper.pay(card)
     }
 
     private fun show3DS(url: String) {
+        dismiss()
         // Открываем 3ds форму
         ThreeDsDialogFragment
             .newInstance(url)
@@ -228,4 +193,12 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener {
         viewModel.onCardSelected(position)
     }
 
+    override fun onPaymentResult(result: PaymentResult) {
+        viewModel.updateLoad(true)
+        show3DS(result.redirectUrl)
+    }
+
+    companion object {
+        const val EMPTY_STRING = ""
+    }
 }

@@ -13,4 +13,25 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowSoftInputMode">adjustUnspecified</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="buttonTheme" parent="Theme.MaterialComponents.Light">
+        <item name="theme">@style/buttonTheme</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="editTextTheme" parent="Theme.MaterialComponents.Light">
+        <item name="theme">@style/editTextTheme</item>
+        <item name="android:background">@drawable/bg_edit_text</item>
+    </style>
 </resources>

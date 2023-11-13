@@ -2,18 +2,17 @@ package payselection.demo.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import payselection.demo.R
 import payselection.demo.databinding.ActivityMainBinding
 import payselection.demo.ui.checkout.CheckoutFragment
-import payselection.demo.ui.checkout.buttomSheet.BottomSheetPay
 import payselection.demo.ui.error.ErrorFragment
 import payselection.demo.ui.success.SuccessFragment
 import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
 class MainActivity : AppCompatActivity() , ThreeDsDialogFragment.ThreeDSDialogListener {
+
     private lateinit var viewBinding: ActivityMainBinding
 
     @SuppressLint("MissingInflatedId")
@@ -28,25 +27,15 @@ class MainActivity : AppCompatActivity() , ThreeDsDialogFragment.ThreeDSDialogLi
 
     override fun onAuthorizationCompleted() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragmentToRemove = supportFragmentManager.findFragmentByTag(BottomSheetPay::class.java.canonicalName)
-        if (fragmentToRemove != null) {
-            fragmentTransaction.remove(fragmentToRemove)
-        }
         fragmentTransaction.add(R.id.fragment_container, SuccessFragment())
             .addToBackStack(SuccessFragment::class.java.canonicalName)
         fragmentTransaction.commit()
-        Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
     }
 
     override fun onAuthorizationFailed() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragmentToRemove = supportFragmentManager.findFragmentByTag(BottomSheetPay::class.java.canonicalName)
-        if (fragmentToRemove != null) {
-            fragmentTransaction.remove(fragmentToRemove)
-        }
         fragmentTransaction.add(R.id.fragment_container, ErrorFragment())
             .addToBackStack(ErrorFragment::class.java.canonicalName)
         fragmentTransaction.commit()
-        Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show()
     }
 }

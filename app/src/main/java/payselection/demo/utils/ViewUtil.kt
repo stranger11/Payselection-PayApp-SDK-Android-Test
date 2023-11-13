@@ -2,8 +2,7 @@ package payselection.demo.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.android.material.textfield.TextInputEditText
@@ -38,15 +37,18 @@ class CombineTripleLiveData<F, S, T, R>(first: LiveData<F>, second: LiveData<S>,
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
 fun TextInputLayout.updateColor(context: Context, isError: Boolean, validText: String, errorText: String) {
     hint = if (isError) errorText else validText
     defaultHintTextColor =
-        if (isError) ColorStateList.valueOf(context.getColor(R.color.error)) else ColorStateList.valueOf(context.getColor(R.color.gray))
+        if (isError) ColorStateList.valueOf(ContextCompat.getColor(context, R.color.error)) else ColorStateList.valueOf(ContextCompat.getColor(context, R.color.gray))
     if (isError) setBackgroundResource(R.drawable.bg_edittext_error) else setBackgroundResource(R.drawable.bg_edit_text)
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
 fun TextInputEditText.updateColor(context: Context, isError: Boolean) {
-    if (isError) setTextColor(context.getColor(R.color.error)) else setTextColor(context.getColor(R.color.black))
+    if (isError) setTextColor(ContextCompat.getColor(context, R.color.error)) else setTextColor(ContextCompat.getColor(context, R.color.black))
+}
+
+fun String.matchesCardNumber(regex: String): Boolean {
+    val cardNumber = filter { it.isDigit() }
+    return Regex(regex).matches(cardNumber)
 }

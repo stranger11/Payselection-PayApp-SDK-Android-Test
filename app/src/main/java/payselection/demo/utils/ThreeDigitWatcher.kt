@@ -17,8 +17,8 @@ class ThreeDigitWatcher : TextWatcher {
 
     private fun isInputCorrect(s: Editable, totalSymbols: Int): Boolean {
         var isCorrect = s.length <= totalSymbols
-        for (i in 0 until s.length) {
-            isCorrect =isCorrect and Character.isDigit(s[i])
+        for (element in s) {
+            isCorrect =isCorrect and Character.isDigit(element)
         }
         return isCorrect
     }

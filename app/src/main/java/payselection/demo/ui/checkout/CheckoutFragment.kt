@@ -4,36 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.ViewFlipper
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import payselection.demo.R
 import payselection.demo.databinding.FCheckoutBinding
+import payselection.demo.models.Product
 import payselection.demo.ui.checkout.adapter.ProductAdapter
 import payselection.demo.ui.checkout.buttomSheet.BottomSheetPay
-import payselection.demo.ui.success.SuccessFragment
-import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
+class CheckoutFragment : Fragment() {
 
-class CheckoutFragment : Fragment(){
-    private val viewModel: CheckoutViewModel by viewModels()
-
-    private var _viewBinding: FCheckoutBinding? = null
-    private val viewBinding get() = _viewBinding!!
-
+    private lateinit var viewBinding: FCheckoutBinding
     private lateinit var productsAdapter: ProductAdapter
 
-    val bottomSheet = BottomSheetPay()
+    private val products by lazy {
+        listOf(
+            Product(
+                name = resources.getString(R.string.product_1_name),
+                description = resources.getString(R.string.product_1_desc),
+                price = resources.getString(R.string.product_1_price),
+                image = R.drawable.image_card_1
+            ),
+            Product(
+                name = resources.getString(R.string.product_2_name),
+                description = resources.getString(R.string.product_2_desc),
+                price = resources.getString(R.string.product_2_price),
+                image = R.drawable.image_card_2
+            ),
+            Product(
+                name = resources.getString(R.string.product_3_name),
+                description = resources.getString(R.string.product_3_desc),
+                price = resources.getString(R.string.price_149),
+                image = R.drawable.image_card_3
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _viewBinding = FCheckoutBinding.inflate(inflater, container, false)
+        viewBinding = FCheckoutBinding.inflate(inflater, container, false)
         return viewBinding.root
     }
 
@@ -44,22 +55,14 @@ class CheckoutFragment : Fragment(){
     }
 
     private fun configureProducts() {
-        productsAdapter = ProductAdapter()
+        productsAdapter = ProductAdapter(products)
         viewBinding.cards.adapter = productsAdapter
         viewBinding.cards.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.products.observe(viewLifecycleOwner) {
-            productsAdapter.updateData(it)
-        }
     }
 
     private fun configureButton() {
         viewBinding.pay.setOnClickListener {
-            showBottomDialog()
+            BottomSheetPay().show(requireActivity().supportFragmentManager, BottomSheetPay::class.java.canonicalName)
         }
     }
-
-    private fun showBottomDialog() {
-        bottomSheet.show(requireActivity().supportFragmentManager, BottomSheetPay::class.java.canonicalName)
-    }
-
 }
