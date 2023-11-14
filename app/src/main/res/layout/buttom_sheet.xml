@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,17 +14,17 @@
 
         <ImageView
             android:id="@+id/handle"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:src="@drawable/ic_line_bottom_sheet" />
 
         <TextView
             android:id="@+id/payCard"
+            style="@style/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            style="@style/text"
             android:gravity="center"
             android:text="@string/payment_card"
             android:textColor="@color/black"
@@ -35,10 +34,10 @@
             android:id="@+id/cardsPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:itemCount="4"
             android:layout_marginTop="24dp"
-            tools:listitem="@layout/i_card"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            tools:itemCount="4"
+            tools:listitem="@layout/i_card" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -55,11 +54,11 @@
                 android:hint="@string/card_number"
                 app:boxStrokeWidth="0dp"
                 app:boxStrokeWidthFocused="0dp"
-                app:hintTextColor="@color/gray"
-                app:endIconTintMode="src_atop"
+                app:endIconDrawable="@drawable/ic_mastercard_with_line"
                 app:endIconMode="custom"
                 app:endIconTint="@android:color/transparent"
-                app:endIconDrawable="@drawable/ic_mastercard_with_line"
+                app:endIconTintMode="src_atop"
+                app:hintTextColor="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -69,24 +68,24 @@
                     android:id="@+id/editCardNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
                     android:background="@android:color/transparent"
+                    android:inputType="phone"
                     android:textColorHint="@color/gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cardData"
+                style="@style/customEdit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintTextColor="@color/gray"
-                style="@style/customEdit"
-                app:boxStrokeWidth="0dp"
                 android:background="@drawable/bg_edit_text"
                 android:hint="@string/dd_mm"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintTextColor="@color/gray"
                 app:layout_constraintEnd_toStartOf="@+id/cardCvv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardNumber">
@@ -96,9 +95,9 @@
                     style="@style/customEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
                     android:layout_margin="0dp"
                     android:background="@android:color/transparent"
+                    android:inputType="phone"
                     android:textColorHint="@color/gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -110,26 +109,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintTextColor="@color/gray"
-                app:boxStrokeWidth="0dp"
                 android:background="@drawable/bg_edit_text"
                 android:hint="@string/cvv"
-                app:passwordToggleTintMode="src_atop"
-                app:passwordToggleTint="@android:color/transparent"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintTextColor="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardData"
                 app:layout_constraintTop_toBottomOf="@+id/cardNumber"
+                app:passwordToggleDrawable="@drawable/password_toggle"
                 app:passwordToggleEnabled="true"
-                app:passwordToggleDrawable="@drawable/password_toggle" >
+                app:passwordToggleTint="@android:color/transparent"
+                app:passwordToggleTintMode="src_atop">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editCardCvv"
+                    style="@style/customEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/customEdit"
-                    android:inputType="numberPassword"
                     android:background="@android:color/transparent"
+                    android:inputType="numberPassword"
                     android:textColorHint="@color/gray" />
 
 
@@ -144,12 +143,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:textSize="16sp"
-            android:textAllCaps="false"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/raleway_600"
             android:fontFeatureSettings="pnum, lnum"
-            android:text="@string/pay" />
+            android:text="@string/pay"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

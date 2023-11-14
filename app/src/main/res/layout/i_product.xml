@@ -42,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:fontFamily = "@font/raleway_600"
-        android:fontFeatureSettings = "pnum, lnum"
+        android:fontFamily="@font/raleway_600"
+        android:fontFeatureSettings="pnum, lnum"
         android:lineSpacingExtra="0sp"
         android:text="@string/product_1_desc"
         android:textColor="@color/gray"
@@ -64,11 +64,11 @@
 
     <TextView
         android:id="@+id/price"
+        style="@style/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="12dp"
-        style="@style/text"
         android:lineSpacingExtra="0sp"
         android:text="@string/product_1_price"
         android:textColor="@color/black"

@@ -11,7 +11,7 @@ import payselection.demo.ui.result.ResultFragment.Companion.ARG_IS_SUCCESS
 import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
-class MainActivity : AppCompatActivity() , ThreeDsDialogFragment.ThreeDSDialogListener {
+class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogListener {
 
     private lateinit var viewBinding: ActivityMainBinding
 

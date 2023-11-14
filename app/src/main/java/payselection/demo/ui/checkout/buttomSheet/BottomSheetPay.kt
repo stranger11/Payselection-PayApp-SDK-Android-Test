@@ -205,7 +205,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
         viewModel.updateLoad(true)
         if (result != null) {
             show3DS(result.redirectUrl)
-        }else {
+        } else {
             val bundle = Bundle()
             bundle.putBoolean(ARG_IS_SUCCESS, false)
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()

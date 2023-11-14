@@ -15,8 +15,8 @@ import payselection.demo.utils.getPaymentSystem
 class CardAdapter(private val cardListener: CardListener) :
     RecyclerView.Adapter<CardAdapter.CardHolder>() {
 
-    private var selectedIndex:Int? = null
-    private var list : List<Card> = emptyList()
+    private var selectedIndex: Int? = null
+    private var list: List<Card> = emptyList()
 
     inner class CardHolder(private val view: ICardBinding) : RecyclerView.ViewHolder(view.root) {
         init {
@@ -77,14 +77,15 @@ class CardAdapter(private val cardListener: CardListener) :
             holder.bindAddCard(selectedIndex == ADD_ITEM_INDEX)
         }
     }
+
     override fun getItemCount() = list.size + 1
 
-    fun updatePosition(index: Int?){
+    fun updatePosition(index: Int?) {
         selectedIndex = index
         notifyDataSetChanged()
     }
 
-    fun updateList(list: List<Card>){
+    fun updateList(list: List<Card>) {
         this.list = list
         notifyDataSetChanged()
     }

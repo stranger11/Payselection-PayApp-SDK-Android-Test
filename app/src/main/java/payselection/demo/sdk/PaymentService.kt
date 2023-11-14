@@ -22,7 +22,7 @@ class PaymentService {
     var paymentResult: PaymentResult? = null
     var card: Card? = null
 
-    private var paymentResultListener: PaymentResultListener?= null
+    private var paymentResultListener: PaymentResultListener? = null
 
     fun init(sdkConfiguration: SdkConfiguration) {
         sdk = PaySelectionPaymentsSdk.getInstance(sdkConfiguration)
@@ -100,15 +100,15 @@ class PaymentService {
         )
     }
 
-        companion object {
-            private var instance: PaymentService? = null
+    companion object {
+        private var instance: PaymentService? = null
 
-            fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentService {
-                if (instance == null) {
-                    instance = PaymentService()
-                }
-                if (paymentResultListener != null) instance?.paymentResultListener = paymentResultListener
-                return instance ?: throw IllegalStateException("Unable to create instance.")
+        fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentService {
+            if (instance == null) {
+                instance = PaymentService()
             }
+            if (paymentResultListener != null) instance?.paymentResultListener = paymentResultListener
+            return instance ?: throw IllegalStateException("Unable to create instance.")
         }
+    }
 }
