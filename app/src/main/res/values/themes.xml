@@ -23,7 +23,7 @@
     <style name="buttonTheme" parent="Widget.MaterialComponents.Button">
         <item name="theme">@style/buttonTheme</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:background">@drawable/selector_button</item>
     </style>
 
     <style name="AppModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">

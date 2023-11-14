@@ -24,10 +24,10 @@
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
-    <style name="buttonTheme" parent="Theme.MaterialComponents.Light">
+    <style name="buttonTheme" parent="Widget.MaterialComponents.Button">
         <item name="theme">@style/buttonTheme</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:background">@drawable/selector_button</item>
     </style>
 
     <style name="editTextTheme" parent="Theme.MaterialComponents.Light">
