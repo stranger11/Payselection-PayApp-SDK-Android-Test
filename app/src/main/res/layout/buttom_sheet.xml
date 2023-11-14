@@ -145,8 +145,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
+            android:textSize="16sp"
+            android:textAllCaps="false"
             android:layout_marginBottom="5dp"
-            android:fontFamily="@font/raleway_700"
+            android:fontFamily="@font/raleway_600"
             android:fontFeatureSettings="pnum, lnum"
             android:text="@string/pay" />
 

@@ -17,8 +17,3 @@ fun TextInputLayout.updateColor(context: Context, isError: Boolean, validText: S
 fun TextInputEditText.updateColor(context: Context, isError: Boolean) {
     if (isError) setTextColor(ContextCompat.getColor(context, R.color.error)) else setTextColor(ContextCompat.getColor(context, R.color.black))
 }
-
-fun String.matchesCardNumber(regex: String): Boolean {
-    val cardNumber = filter { it.isDigit() }
-    return Regex(regex).matches(cardNumber)
-}

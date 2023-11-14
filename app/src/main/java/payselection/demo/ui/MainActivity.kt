@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import payselection.demo.R
 import payselection.demo.databinding.ActivityMainBinding
 import payselection.demo.ui.checkout.CheckoutFragment
-import payselection.demo.ui.error.ErrorFragment
-import payselection.demo.ui.success.SuccessFragment
+import payselection.demo.ui.result.ResultFragment
+import payselection.demo.ui.result.ResultFragment.Companion.ARG_IS_SUCCESS
 import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
@@ -26,16 +26,20 @@ class MainActivity : AppCompatActivity() , ThreeDsDialogFragment.ThreeDSDialogLi
     }
 
     override fun onAuthorizationCompleted() {
+        val bundle = Bundle()
+        bundle.putBoolean(ARG_IS_SUCCESS, true)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, SuccessFragment())
-            .addToBackStack(SuccessFragment::class.java.canonicalName)
+        fragmentTransaction.add(R.id.fragment_container, ResultFragment.createInstance(bundle))
+            .addToBackStack(ResultFragment::class.java.canonicalName)
         fragmentTransaction.commit()
     }
 
     override fun onAuthorizationFailed() {
+        val bundle = Bundle()
+        bundle.putBoolean(ARG_IS_SUCCESS, false)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, ErrorFragment())
-            .addToBackStack(ErrorFragment::class.java.canonicalName)
+        fragmentTransaction.add(R.id.fragment_container, ResultFragment.createInstance(bundle))
+            .addToBackStack(ResultFragment::class.java.canonicalName)
         fragmentTransaction.commit()
     }
 }

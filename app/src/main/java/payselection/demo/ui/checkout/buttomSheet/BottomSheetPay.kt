@@ -18,11 +18,15 @@ import payselection.demo.ui.checkout.CheckoutViewModel
 import payselection.demo.ui.checkout.adapter.CardAdapter
 import payselection.demo.ui.checkout.common.CardListener
 import payselection.demo.ui.checkout.common.PaymentResultListener
-import payselection.demo.ui.checkout.common.State
-import payselection.demo.ui.error.ErrorFragment
+import payselection.demo.ui.checkout.common.ActionState
+import payselection.demo.ui.result.ResultFragment
+import payselection.demo.ui.result.ResultFragment.Companion.ARG_IS_SUCCESS
+import payselection.demo.utils.ADD_ITEM_INDEX
+import payselection.demo.utils.EMPTY_STRING
 import payselection.demo.utils.ExpiryDateTextWatcher
 import payselection.demo.utils.FourDigitCardFormatWatcher
 import payselection.demo.utils.ThreeDigitWatcher
+import payselection.demo.utils.getPaymentSystem
 import payselection.demo.utils.updateColor
 import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.models.results.pay.PaymentResult
@@ -36,7 +40,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
 
     private lateinit var cardsAdapter: CardAdapter
 
-    private lateinit var paymentHelper: PaymentService
+    private lateinit var paymentService: PaymentService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,18 +58,18 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureViewPager()
+        configureCardAdapter()
         configureError()
         configureButton()
         configureAnother()
     }
 
-    private fun configureViewPager() = with(binding) {
+    private fun configureCardAdapter() = with(binding) {
         cardsAdapter = CardAdapter(this@BottomSheetPay)
         cardsPager.adapter = cardsAdapter
         cardsPager.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        viewModel.uiCards.observe(viewLifecycleOwner) {
-            cardsAdapter.updateData(it)
+        viewModel.cards.observe(viewLifecycleOwner) {
+            cardsAdapter.updateList(it)
         }
     }
 
@@ -74,12 +78,12 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
             viewModel.isEnable.observe(viewLifecycleOwner) {
                 pay.isEnabled = it
             }
-            viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            viewModel.actionState.observe(viewLifecycleOwner) { state ->
                 pay.text =
-                    if (state == State.PAY) requireContext().getString(R.string.pay_card) else requireContext().getString(R.string.save_card)
+                    if (state == ActionState.PAY) requireContext().getString(R.string.pay_card) else requireContext().getString(R.string.save_card)
                 pay.setOnClickListener {
                     when (state) {
-                        State.ADD -> viewModel.addCard(editCardNumber.text.toString(), editCardData.text.toString())
+                        ActionState.ADD -> viewModel.addCard(editCardNumber.text.toString(), editCardData.text.toString())
                         else -> pay(Card(viewModel.cardNumber.value.orEmpty(), viewModel.cardDate.value.orEmpty(), viewModel.cardCvv.value.orEmpty()))
                     }
                 }
@@ -94,7 +98,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
             editCardCvv.addTextChangedListener(ThreeDigitWatcher())
 
             viewModel.currentPosition.observe(viewLifecycleOwner) { currentPosition ->
-                if (currentPosition == -1 || currentPosition == null) {
+                if (currentPosition == ADD_ITEM_INDEX || currentPosition == null) {
                     editCardNumber.setText(EMPTY_STRING)
                     editCardData.setText(EMPTY_STRING)
                     editCardCvv.setText(EMPTY_STRING)
@@ -105,6 +109,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                     if (currentPosition != 0) editCardCvv.setText(EMPTY_STRING)
                 }
                 requireView().findFocus()?.clearFocus()
+                cardsAdapter.updatePosition(currentPosition)
             }
 
             viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -126,7 +131,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
             editCardNumber.doOnTextChanged { text, start, before, count ->
                 viewModel.setCardNumber(text.toString())
                 if (text?.length == 19) {
-                    binding.cardNumber.endIconDrawable = viewModel.getPaymentSystem(text.filter { it.isDigit() }.toString())
+                    binding.cardNumber.endIconDrawable = getPaymentSystem(text.filter { it.isDigit() }.toString())
                         ?.let { ContextCompat.getDrawable(requireContext(), it.imageWithLine) }
                 }
             }
@@ -173,13 +178,15 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
 
     private fun pay(card: Card) {
         viewModel.updateLoad(true)
-        val apiKey =
-            "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e"
-        val merchantId = "21044"
-        val isTestMode = true
-        paymentHelper = PaymentService.getInstance(this)
-        paymentHelper.init(SdkConfiguration(apiKey, merchantId, isTestMode))
-        paymentHelper.pay(card)
+        paymentService = PaymentService.getInstance(this)
+        paymentService.init(
+            SdkConfiguration(
+                "04bd07d3547bd1f90ddbd985feaaec59420cabd082ff5215f34fd1c89c5d8562e8f5e97a5df87d7c99bc6f16a946319f61f9eb3ef7cf355d62469edb96c8bea09e",
+                "21044",
+                true
+            )
+        )
+        paymentService.pay(card)
     }
 
     private fun show3DS(url: String) {
@@ -199,14 +206,12 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
         if (result != null) {
             show3DS(result.redirectUrl)
         }else {
+            val bundle = Bundle()
+            bundle.putBoolean(ARG_IS_SUCCESS, false)
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.fragment_container, ErrorFragment())
-                .addToBackStack(ErrorFragment::class.java.canonicalName)
+            fragmentTransaction.add(R.id.fragment_container, ResultFragment.createInstance(bundle))
+                .addToBackStack(ResultFragment::class.java.canonicalName)
             fragmentTransaction.commit()
         }
-    }
-
-    companion object {
-        const val EMPTY_STRING = ""
     }
 }

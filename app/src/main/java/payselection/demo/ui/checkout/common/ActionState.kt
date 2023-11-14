@@ -1,6 +1,6 @@
 package payselection.demo.ui.checkout.common
 
-enum class State {
+enum class ActionState {
     ADD,
     PAY
 }

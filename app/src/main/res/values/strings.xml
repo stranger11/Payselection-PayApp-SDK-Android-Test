@@ -20,8 +20,6 @@
     <string name="price_0">0 ₽</string>
     <string name="price_446">446 ₽</string>
 
-
-
     <string name="price">Стоимость</string>
     <string name="delivery">Доставка</string>
     <string name="nds">НДС</string>
@@ -59,5 +57,5 @@
     <string name="paid_card">Картой онлайн masterCard **** 3456</string>
     <string name="paid_card_format">Картой онлайн masterCard **** %s</string>
 
-
+    <string name="card_number_format">** %s</string>
 </resources>

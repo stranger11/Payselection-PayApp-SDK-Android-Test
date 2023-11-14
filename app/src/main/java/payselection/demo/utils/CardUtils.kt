@@ -1,5 +1,7 @@
 package payselection.demo.utils
 
+import payselection.demo.ui.checkout.CheckoutViewModel
+import payselection.demo.ui.checkout.common.CardType
 import java.util.Calendar
 
 fun validCardNumber(cardNumber: String):Boolean {
@@ -37,3 +39,14 @@ fun validCardDate(date: String):Boolean {
 fun validCvv(cvv: String):Boolean {
     return cvv.length == 3 || cvv.isEmpty()
 }
+
+fun getPaymentSystem(cardNumber: String): CardType? = when {
+    cardNumber.matches(MASTERCARD_REGEX) -> CardType.MASTERCARD
+    cardNumber.matches(VISA_REGEX) -> CardType.VISA
+    cardNumber.matches(MIR_REGEX) -> CardType.MIR
+    else -> null
+}
+
+val MASTERCARD_REGEX = Regex("^5[1-5][0-9]{14}$")
+val VISA_REGEX = Regex("^4[0-9]{12}(?:[0-9]{3})?$")
+val MIR_REGEX = Regex("^2[0-9]{15}$")

@@ -3,16 +3,20 @@ package payselection.demo.ui.checkout.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import payselection.demo.R
 import payselection.demo.databinding.ICardBinding
-import payselection.demo.models.UiCard
+import payselection.demo.models.Card
 import payselection.demo.ui.checkout.common.CardListener
+import payselection.demo.utils.ADD_ITEM_INDEX
+import payselection.demo.utils.getPaymentSystem
 
 
-class CardAdapter(private val cardListener: CardListener) : RecyclerView.Adapter<CardAdapter.CardHolder>() {
+class CardAdapter(private val cardListener: CardListener) :
+    RecyclerView.Adapter<CardAdapter.CardHolder>() {
 
-    private var cards: List<UiCard> = emptyList()
+    private var selectedIndex:Int? = null
+    private var list : List<Card> = emptyList()
 
     inner class CardHolder(private val view: ICardBinding) : RecyclerView.ViewHolder(view.root) {
         init {
@@ -21,17 +25,37 @@ class CardAdapter(private val cardListener: CardListener) : RecyclerView.Adapter
             }
         }
 
-        fun bind(card: UiCard) {
+        fun bind(card: Card, isSelected: Boolean) {
             with(view) {
-                cardNumber.text = card.title
-                cardNumber.setTextColor(ContextCompat.getColor(root.context, card.textColor))
-                if (card.cardType != null) {
-                    imageCardType.setImageResource(card.cardType)
+                cardNumber.text = root.context.getString(R.string.card_number_format, card.number.takeLast(4))
+                val paymentSystem = getPaymentSystem(card.number.filter { it.isDigit() })
+                if (paymentSystem != null) {
+                    imageCardType.setImageResource(paymentSystem.image)
                 } else {
                     imageCardType.setImageDrawable(null)
                 }
-                imageAdd.setImageResource(card.icon)
-                root.setBackgroundResource(card.backGround)
+                imageAdd.setImageResource(R.drawable.ic_ready)
+                if (isSelected) {
+                    cardNumber.setTextColor(ContextCompat.getColor(root.context, R.color.white))
+                    root.setBackgroundResource(R.drawable.bg_select_card)
+                } else {
+                    cardNumber.setTextColor(ContextCompat.getColor(root.context, R.color.gray))
+                    root.setBackgroundResource(R.drawable.bg_card)
+                }
+            }
+        }
+
+        fun bindAddCard(isSelected: Boolean) {
+            with(view) {
+                cardNumber.text = root.context.getString(R.string.card_adding)
+                imageCardType.setImageDrawable(null)
+                root.setBackgroundResource(R.drawable.bg_card)
+                cardNumber.setTextColor(ContextCompat.getColor(root.context, R.color.gray))
+                if (isSelected) {
+                    imageAdd.setImageResource(R.drawable.ic_ready_blue)
+                } else {
+                    imageAdd.setImageResource(R.drawable.ic_plus)
+                }
             }
         }
     }
@@ -47,13 +71,21 @@ class CardAdapter(private val cardListener: CardListener) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
-        holder.bind(cards[position])
+        if (position < list.size) {
+            holder.bind(list[position], selectedIndex == position)
+        } else {
+            holder.bindAddCard(selectedIndex == ADD_ITEM_INDEX)
+        }
+    }
+    override fun getItemCount() = list.size + 1
+
+    fun updatePosition(index: Int?){
+        selectedIndex = index
+        notifyDataSetChanged()
     }
 
-    override fun getItemCount() = cards.size
-
-    fun updateData(listItem: List<UiCard>) {
-        cards = listItem
+    fun updateList(list: List<Card>){
+        this.list = list
         notifyDataSetChanged()
     }
 }

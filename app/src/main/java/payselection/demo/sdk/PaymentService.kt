@@ -16,7 +16,7 @@ import payselection.payments.sdk.models.requests.pay.PaymentData
 import payselection.payments.sdk.models.requests.pay.TransactionDetails
 import payselection.payments.sdk.models.results.pay.PaymentResult
 
-class PaymentService() {
+class PaymentService {
 
     private var sdk: PaySelectionPaymentsSdk? = null
     var paymentResult: PaymentResult? = null
@@ -100,14 +100,15 @@ class PaymentService() {
         )
     }
 
-    companion object {
-        private val instance by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            PaymentService()
-        }
+        companion object {
+            private var instance: PaymentService? = null
 
-        fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentService {
-            if (paymentResultListener != null) instance.paymentResultListener = paymentResultListener
-            return instance
+            fun getInstance(paymentResultListener: PaymentResultListener? = null): PaymentService {
+                if (instance == null) {
+                    instance = PaymentService()
+                }
+                if (paymentResultListener != null) instance?.paymentResultListener = paymentResultListener
+                return instance ?: throw IllegalStateException("Unable to create instance.")
+            }
         }
-    }
 }

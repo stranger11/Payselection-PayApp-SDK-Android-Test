@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/success"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="76dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:gravity="center"
+            android:lineSpacingExtra="1sp"
+            android:text="@string/order_success"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/order_info"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/order_number"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/odrer_date"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/recipient"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/recipient_name"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/recipient_phone"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/express_delivery"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/express_delivery_address"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/paid"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/payCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_700"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/paid_card"
+            android:textColor="@color/light_blue_dark"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/price"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="@string/price_297"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/delivery"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:text="@string/price_149"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/nds"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:text="@string/price_0"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/sale"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="@string/price_0"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/total"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_700"
+                android:fontFeatureSettings="pnum, lnum"
+                android:gravity=""
+                android:text="@string/price_446"
+                android:textColor="@color/light_blue_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_close" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/image_error"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:src="@drawable/ic_error"/>
+
+        <TextView
+            android:id="@+id/error_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_700"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:fontFeatureSettings="pnum, lnum"
+            android:lineSpacingExtra="1sp"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Что то пошло не так"/>
+
+        <TextView
+            android:id="@+id/error_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/raleway_600"
+            android:fontFeatureSettings="pnum, lnum"
+            android:gravity="center"
+            android:lineSpacingExtra="1sp"
+            android:text="Пополните карту\nили воспользуйтесь другой"
+            android:textColor="@color/gray"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/nav_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="48dp"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/raleway_600"
+        android:fontFeatureSettings="pnum, lnum"
+        android:text="@string/navigate_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

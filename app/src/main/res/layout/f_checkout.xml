@@ -34,6 +34,7 @@
                 android:fontFamily="@font/raleway_700"
                 android:textAlignment="center"/>
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cards"
                 android:layout_marginTop="24dp"
@@ -212,7 +213,9 @@
                 android:layout_marginTop="75dp"
                 android:layout_marginBottom="48dp"
                 android:text="@string/pay"
-                android:fontFamily="@font/raleway_700"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/raleway_600"
                 android:fontFeatureSettings="pnum, lnum"
                 android:layout_marginHorizontal="32dp"
                 android:background="@drawable/bg_button"/>
