@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -36,7 +37,7 @@ import payselection.payments.sdk.ui.ThreeDsDialogFragment
 class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultListener {
 
     private lateinit var binding: ButtomSheetBinding
-    private val viewModel: CheckoutViewModel by viewModels()
+    private val viewModel: CheckoutViewModel by activityViewModels()
 
     private lateinit var cardsAdapter: CardAdapter
 
@@ -120,17 +121,17 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
 
     private fun configureError() {
         with(binding) {
-            editCardCvv.doOnTextChanged { text, start, before, count ->
+            editCardCvv.doOnTextChanged { text, _, _, _ ->
                 viewModel.setCardCvv(text.toString())
             }
 
-            editCardData.doOnTextChanged { text, start, before, count ->
+            editCardData.doOnTextChanged { text, _, _, _ ->
                 viewModel.setCardDate(text.toString())
             }
 
-            editCardNumber.doOnTextChanged { text, start, before, count ->
+            editCardNumber.doOnTextChanged { text, _, _, _ ->
                 viewModel.setCardNumber(text.toString())
-                if (text?.length == 19) {
+                if (text?.length == CARD_LENGTH_TOTAL) {
                     binding.cardNumber.endIconDrawable = getPaymentSystem(text.filter { it.isDigit() }.toString())
                         ?.let { ContextCompat.getDrawable(requireContext(), it.imageWithLine) }
                 }
@@ -213,5 +214,9 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                 .addToBackStack(ResultFragment::class.java.canonicalName)
             fragmentTransaction.commit()
         }
+    }
+
+    companion object{
+        const val CARD_LENGTH_TOTAL = 19
     }
 }
