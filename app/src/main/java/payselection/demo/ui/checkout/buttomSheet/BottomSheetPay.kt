@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import payselection.demo.R
@@ -16,9 +16,9 @@ import payselection.demo.models.Card
 import payselection.demo.sdk.PaymentService
 import payselection.demo.ui.checkout.CheckoutViewModel
 import payselection.demo.ui.checkout.adapter.CardAdapter
+import payselection.demo.ui.checkout.common.ActionState
 import payselection.demo.ui.checkout.common.CardListener
 import payselection.demo.ui.checkout.common.PaymentResultListener
-import payselection.demo.ui.checkout.common.ActionState
 import payselection.demo.ui.result.ResultFragment
 import payselection.demo.ui.result.ResultFragment.Companion.ARG_IS_SUCCESS
 import payselection.demo.utils.ADD_ITEM_INDEX
@@ -36,7 +36,7 @@ import payselection.payments.sdk.ui.ThreeDsDialogFragment
 class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultListener {
 
     private lateinit var binding: ButtomSheetBinding
-    private val viewModel: CheckoutViewModel by viewModels()
+    private val viewModel: CheckoutViewModel by activityViewModels()
 
     private lateinit var cardsAdapter: CardAdapter
 
@@ -106,7 +106,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                     val cards = viewModel.cards.value
                     editCardNumber.setText(cards?.get(currentPosition)?.number.orEmpty())
                     editCardData.setText(cards?.get(currentPosition)?.date.orEmpty())
-                    if (currentPosition != 0) editCardCvv.setText(EMPTY_STRING)
+                    if (currentPosition != (cards?.size?.minus(1))) editCardCvv.setText(EMPTY_STRING)
                 }
                 requireView().findFocus()?.clearFocus()
                 cardsAdapter.updatePosition(currentPosition)
@@ -120,17 +120,17 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
 
     private fun configureError() {
         with(binding) {
-            editCardCvv.doOnTextChanged { text, start, before, count ->
+            editCardCvv.doOnTextChanged { text, _, _, _ ->
                 viewModel.setCardCvv(text.toString())
             }
 
-            editCardData.doOnTextChanged { text, start, before, count ->
+            editCardData.doOnTextChanged { text, _, _, _ ->
                 viewModel.setCardDate(text.toString())
             }
 
-            editCardNumber.doOnTextChanged { text, start, before, count ->
+            editCardNumber.doOnTextChanged { text, _, _, _ ->
                 viewModel.setCardNumber(text.toString())
-                if (text?.length == 19) {
+                if (text?.length == CARD_LENGTH_TOTAL) {
                     binding.cardNumber.endIconDrawable = getPaymentSystem(text.filter { it.isDigit() }.toString())
                         ?.let { ContextCompat.getDrawable(requireContext(), it.imageWithLine) }
                 }
@@ -174,6 +174,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
         binding.editCardNumber.setText(EMPTY_STRING)
         binding.editCardData.setText(EMPTY_STRING)
         binding.editCardCvv.setText(EMPTY_STRING)
+        viewModel.updateCheckoutButtonEnable(true)
     }
 
     private fun pay(card: Card) {
@@ -213,5 +214,9 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                 .addToBackStack(ResultFragment::class.java.canonicalName)
             fragmentTransaction.commit()
         }
+    }
+
+    companion object{
+        const val CARD_LENGTH_TOTAL = 19
     }
 }

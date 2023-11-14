@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogLis
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, CheckoutFragment())
+        fragmentTransaction.replace(R.id.fragment_container, CheckoutFragment())
         fragmentTransaction.commit()
     }
 
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogLis
         val bundle = Bundle()
         bundle.putBoolean(ARG_IS_SUCCESS, true)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, ResultFragment.createInstance(bundle))
+        fragmentTransaction.replace(R.id.fragment_container, ResultFragment.createInstance(bundle))
             .addToBackStack(ResultFragment::class.java.canonicalName)
         fragmentTransaction.commit()
     }
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogLis
         val bundle = Bundle()
         bundle.putBoolean(ARG_IS_SUCCESS, false)
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, ResultFragment.createInstance(bundle))
+        fragmentTransaction.replace(R.id.fragment_container, ResultFragment.createInstance(bundle))
             .addToBackStack(ResultFragment::class.java.canonicalName)
         fragmentTransaction.commit()
     }

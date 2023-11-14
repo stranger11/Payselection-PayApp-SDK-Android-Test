@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import payselection.demo.R
 import payselection.demo.databinding.FCheckoutBinding
@@ -16,6 +17,8 @@ class CheckoutFragment : Fragment() {
 
     private lateinit var viewBinding: FCheckoutBinding
     private lateinit var productsAdapter: ProductAdapter
+
+    private val viewModel: CheckoutViewModel by activityViewModels()
 
     private val products by lazy {
         listOf(
@@ -54,6 +57,11 @@ class CheckoutFragment : Fragment() {
         configureButton()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewBinding.pay.isEnabled = true
+    }
+
     private fun configureProducts() {
         productsAdapter = ProductAdapter(products)
         viewBinding.cards.adapter = productsAdapter
@@ -61,8 +69,17 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun configureButton() {
+        viewModel.checkoutButtonEnable.observe(viewLifecycleOwner){
+            viewBinding.pay.isEnabled = it
+        }
         viewBinding.pay.setOnClickListener {
             BottomSheetPay().show(requireActivity().supportFragmentManager, BottomSheetPay::class.java.canonicalName)
+            viewModel.updateCheckoutButtonEnable(false)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        println("on pause")
     }
 }

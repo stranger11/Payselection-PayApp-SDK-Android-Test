@@ -36,6 +36,9 @@ class CheckoutViewModel : ViewModel() {
     val cardNumber = MutableLiveData<String>()
     val cardCvv = MutableLiveData<String>()
 
+    private val _checkoutButtonEnable = MutableLiveData<Boolean>()
+    val checkoutButtonEnable: LiveData<Boolean> = _checkoutButtonEnable
+
     val isEnable = CombineTripleLiveData(_isDataValid, _isNumberValid, _isCvvValid) { isDataValid, isNumberValid, isCvvValid ->
         isDataValid == true && isNumberValid == true && isCvvValid == true && cardDate.value?.isEmpty() == false && cardNumber.value?.isEmpty() == false
                 && cardCvv.value?.isEmpty() == false
@@ -52,10 +55,8 @@ class CheckoutViewModel : ViewModel() {
     fun addCard(number: String, date: String) {
         val card = Card(number, date)
         val cards = _cards.value ?: emptyList()
-        _cards.value = cards.toMutableList().apply {
-            add(0, card)
-        }
-        currentPosition.postValue(0)
+        _cards.value = cards.toMutableList().apply { add(card) }
+        currentPosition.postValue(cards.size)
     }
 
     fun setCardDate(date: String) {
@@ -76,5 +77,9 @@ class CheckoutViewModel : ViewModel() {
 
     fun updateLoad(isLoad: Boolean) {
         _isLoading.postValue(isLoad)
+    }
+
+    fun updateCheckoutButtonEnable(isEnable: Boolean) {
+        _checkoutButtonEnable.postValue(isEnable)
     }
 }
