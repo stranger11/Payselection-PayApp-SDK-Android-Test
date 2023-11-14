@@ -4,7 +4,4 @@
         <item name="android:textColorPrimary">@color/gray</item>
     </style>
 
-    <style name="text">
-        <item name="android:textColorPrimary">@color/gray</item>
-    </style>
 </resources>
