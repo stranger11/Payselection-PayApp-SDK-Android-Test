@@ -130,11 +130,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="numberPassword"
                     android:textColorHint="@color/gray" />
-
-
             </com.google.android.material.textfield.TextInputLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -142,8 +138,8 @@
             style="@style/buttonTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/raleway_600"
             android:fontFeatureSettings="pnum, lnum"
             android:text="@string/pay"

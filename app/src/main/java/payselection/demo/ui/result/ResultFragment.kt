@@ -26,12 +26,7 @@ class ResultFragment : Fragment() {
         val success = arguments?.getBoolean(ARG_IS_SUCCESS) ?: false
         if (success) configureSuccessUI() else configureErrorUI()
 
-        viewBinding.navButtonError.setOnClickListener {
-            val fragmentManager = requireActivity().supportFragmentManager
-            fragmentManager.popBackStack()
-        }
-
-        viewBinding.navButtonSuccess.setOnClickListener {
+        viewBinding.navButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             fragmentManager.popBackStack()
         }

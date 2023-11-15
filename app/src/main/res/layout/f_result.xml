@@ -11,6 +11,7 @@
         android:id="@+id/success"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="78dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,9 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="76dp"
                 android:gravity="center"
                 android:lineSpacingExtra="1sp"
-                android:layout_marginTop="76dp"
                 android:text="@string/order_success"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
@@ -281,20 +282,6 @@
                     android:textColor="@color/light_blue_dark"
                     android:textSize="14sp" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/nav_button_success"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
-                android:layout_marginTop="185dp"
-                android:layout_marginBottom="48dp"
-                android:background="@drawable/bg_button"
-                android:fontFamily="@font/raleway_600"
-                android:fontFeatureSettings="pnum, lnum"
-                android:text="@string/navigate_main"
-                android:textAllCaps="false"
-                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
 
@@ -354,20 +341,21 @@
             android:text="@string/error_desc"
             android:textColor="@color/gray"
             android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/nav_button_error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="48dp"
-            android:background="@drawable/bg_button"
-            android:fontFamily="@font/raleway_600"
-            android:fontFeatureSettings="pnum, lnum"
-            android:text="@string/navigate_main"
-            android:textAllCaps="false"
-            android:textSize="16sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/nav_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/raleway_600"
+        android:fontFeatureSettings="pnum, lnum"
+        android:text="@string/navigate_main"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
