@@ -58,4 +58,6 @@
     <string name="paid_card_format">Картой онлайн masterCard **** %s</string>
 
     <string name="card_number_format">** %s</string>
+    <string name="error">Что-то пошло не так</string>
+    <string name="error_desc">Попробуйте повторить \n оплату позже</string>
 </resources>
