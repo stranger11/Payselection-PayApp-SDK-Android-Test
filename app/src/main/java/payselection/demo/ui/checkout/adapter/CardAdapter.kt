@@ -49,11 +49,12 @@ class CardAdapter(private val cardListener: CardListener) :
             with(view) {
                 cardNumber.text = root.context.getString(R.string.card_adding)
                 imageCardType.setImageDrawable(null)
-                root.setBackgroundResource(R.drawable.bg_card)
                 cardNumber.setTextColor(ContextCompat.getColor(root.context, R.color.gray))
                 if (isSelected) {
+                    root.setBackgroundResource(R.drawable.bg_card_add_selected)
                     imageAdd.setImageResource(R.drawable.ic_ready_blue)
                 } else {
+                    root.setBackgroundResource(R.drawable.bg_card)
                     imageAdd.setImageResource(R.drawable.ic_plus)
                 }
             }

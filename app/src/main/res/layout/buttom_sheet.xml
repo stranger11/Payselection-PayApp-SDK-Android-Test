@@ -70,6 +70,8 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:inputType="phone"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@id/editCardData"
                     android:textColorHint="@color/gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -96,6 +98,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@id/editCardCvv"
                     android:background="@android:color/transparent"
                     android:inputType="phone"
                     android:textColorHint="@color/gray" />

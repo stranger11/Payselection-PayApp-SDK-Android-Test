@@ -54,7 +54,7 @@
     <string name="express_delivery">Курьерская доставка</string>
     <string name="express_delivery_address">Россия, г. Москва, ул. Цветной бульвар, д. 30, стр. 1</string>
     <string name="paid">Оплачено</string>
-    <string name="paid_card">Картой онлайн masterCard **** 3456</string>
+    <string name="paid_card">Картой онлайн MasterCard **** 3456</string>
     <string name="paid_card_format">Картой онлайн masterCard **** %s</string>
 
     <string name="card_number_format">** %s</string>

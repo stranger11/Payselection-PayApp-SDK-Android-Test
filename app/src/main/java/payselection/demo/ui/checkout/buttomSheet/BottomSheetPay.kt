@@ -84,7 +84,11 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                 pay.setOnClickListener {
                     when (state) {
                         ActionState.ADD -> viewModel.addCard(editCardNumber.text.toString(), editCardData.text.toString())
-                        else -> pay(Card(viewModel.cardNumber.value.orEmpty(), viewModel.cardDate.value.orEmpty(), viewModel.cardCvv.value.orEmpty()))
+                        else -> {
+                            val payCard = Card(viewModel.cardNumber, viewModel.cardDate)
+                            viewModel.replaceCard(payCard)
+                            pay(payCard)
+                        }
                     }
                 }
             }
@@ -121,18 +125,29 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
     private fun configureError() {
         with(binding) {
             editCardCvv.doOnTextChanged { text, _, _, _ ->
-                viewModel.setCardCvv(text.toString())
+                viewModel.putCardCvv(text.toString())
+                cardCvv.isEndIconVisible = text?.isEmpty() != true
+            }
+
+            editCardCvv.setOnFocusChangeListener { _, hasFocus ->
+                viewModel.validCardCvv(hasFocus = hasFocus)
+            }
+            editCardNumber.setOnFocusChangeListener { _, hasFocus ->
+                viewModel.validCardNumber(hasFocus = hasFocus)
+            }
+            editCardData.setOnFocusChangeListener { _, hasFocus ->
+                viewModel.validCardDate(hasFocus = hasFocus)
             }
 
             editCardData.doOnTextChanged { text, _, _, _ ->
-                viewModel.setCardDate(text.toString())
+                viewModel.putCardDate(text.toString())
             }
 
             editCardNumber.doOnTextChanged { text, _, _, _ ->
-                viewModel.setCardNumber(text.toString())
-                if (text?.length == CARD_LENGTH_TOTAL) {
-                    binding.cardNumber.endIconDrawable = getPaymentSystem(text.filter { it.isDigit() }.toString())
-                        ?.let { ContextCompat.getDrawable(requireContext(), it.imageWithLine) }
+                val cardNumber = text.toString().replace(" ", "")
+                viewModel.putCardNumber(cardNumber)
+                binding.cardNumber.endIconDrawable = getPaymentSystem(cardNumber)?.let { paymentSystem ->
+                    ContextCompat.getDrawable(requireContext(), paymentSystem.imageWithLine)
                 }
             }
 
@@ -164,7 +179,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                     requireContext().getString(R.string.error_number)
                 )
                 editCardNumber.updateColor(requireContext(), !isValid)
-                cardNumber.isEndIconVisible = isValid && !viewModel.cardNumber.value.isNullOrEmpty()
+                cardNumber.isEndIconVisible = isValid && viewModel.cardNumber.isNotEmpty()
             }
         }
     }
@@ -216,7 +231,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
         }
     }
 
-    companion object{
+    companion object {
         const val CARD_LENGTH_TOTAL = 19
     }
 }

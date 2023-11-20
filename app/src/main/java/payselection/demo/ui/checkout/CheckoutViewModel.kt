@@ -7,11 +7,12 @@ import androidx.lifecycle.ViewModel
 import payselection.demo.models.Card
 import payselection.demo.ui.checkout.common.ActionState
 import payselection.demo.utils.ADD_ITEM_INDEX
+import payselection.demo.utils.CARD_DATE_LENGTH
+import payselection.demo.utils.CARD_NUMBER_LENGTH
 import payselection.demo.utils.CombineTripleLiveData
-import payselection.demo.utils.validCardDate
-import payselection.demo.utils.validCardNumber
-import payselection.demo.utils.validCvv
-
+import payselection.demo.utils.isValidCardDate
+import payselection.demo.utils.isValidCardNumber
+import payselection.demo.utils.isValidCvv
 
 class CheckoutViewModel : ViewModel() {
 
@@ -32,16 +33,16 @@ class CheckoutViewModel : ViewModel() {
     private val _isCvvValid = MutableLiveData<Boolean>()
     val isCvvValid: LiveData<Boolean> = _isCvvValid
 
-    val cardDate = MutableLiveData<String>()
-    val cardNumber = MutableLiveData<String>()
-    val cardCvv = MutableLiveData<String>()
+    var cardDate = ""
+    var cardNumber = ""
+    var cardCvv = ""
 
     private val _checkoutButtonEnable = MutableLiveData<Boolean>()
     val checkoutButtonEnable: LiveData<Boolean> = _checkoutButtonEnable
 
     val isEnable = CombineTripleLiveData(_isDataValid, _isNumberValid, _isCvvValid) { isDataValid, isNumberValid, isCvvValid ->
-        isDataValid == true && isNumberValid == true && isCvvValid == true && cardDate.value?.isEmpty() == false && cardNumber.value?.isEmpty() == false
-                && cardCvv.value?.isEmpty() == false
+        isDataValid == true && isNumberValid == true && isCvvValid == true && cardDate.isNotEmpty() && cardNumber.isNotEmpty()
+                && cardCvv.isNotEmpty()
     }
 
     val actionState: LiveData<ActionState> = Transformations.map(currentPosition) {
@@ -59,20 +60,59 @@ class CheckoutViewModel : ViewModel() {
         currentPosition.postValue(cards.size)
     }
 
-    fun setCardDate(date: String) {
-        cardDate.postValue(date)
-        _isDataValid.postValue(validCardDate(date))
+    fun putCardDate(date: String) {
+        this.cardDate = date
+        validCardDate()
     }
 
-    fun setCardCvv(cvv: String) {
-        cardCvv.postValue(cvv)
-        _isCvvValid.postValue(validCvv(cvv))
+    fun putCardCvv(cvv: String) {
+        cardCvv = cvv
+        validCardCvv()
     }
 
-    fun setCardNumber(cardNumber: String) {
-        val extractCardNumber = cardNumber.filter { it.isDigit() }
-        this.cardNumber.postValue(extractCardNumber)
-        _isNumberValid.postValue(validCardNumber(extractCardNumber))
+    fun putCardNumber(cardNumber: String) {
+        this.cardNumber = cardNumber
+        validCardNumber()
+    }
+
+    fun validCardNumber(hasFocus: Boolean = true){
+        if (hasFocus){
+            if (cardNumber.length == CARD_NUMBER_LENGTH) {
+                _isNumberValid.postValue(isValidCardNumber(cardNumber))
+            } else {
+                _isNumberValid.postValue(true)
+            }
+        } else {
+            _isNumberValid.postValue(isValidCardNumber(cardNumber))
+        }
+    }
+
+    fun validCardDate(hasFocus: Boolean = true){
+        if (hasFocus){
+            if (cardDate.length == CARD_DATE_LENGTH) {
+                _isDataValid.postValue(isValidCardDate(cardDate))
+            } else {
+                _isDataValid.postValue(true)
+            }
+        } else {
+            _isDataValid.postValue(isValidCardDate(cardDate))
+        }
+    }
+
+    fun validCardCvv(hasFocus: Boolean = true){
+        if (hasFocus){
+            _isCvvValid.postValue(true)
+        }else {
+            _isCvvValid.postValue(isValidCvv(cardCvv))
+        }
+    }
+
+    fun replaceCard(newCard: Card) {
+        val cards = _cards.value?.toMutableList() ?: return
+        val position = currentPosition.value ?: return
+
+        cards[position] = newCard
+        _cards.postValue(cards)
     }
 
     fun updateLoad(isLoad: Boolean) {

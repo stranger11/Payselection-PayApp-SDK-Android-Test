@@ -4,22 +4,27 @@ import payselection.demo.ui.checkout.CheckoutViewModel
 import payselection.demo.ui.checkout.common.CardType
 import java.util.Calendar
 
-fun validCardNumber(cardNumber: String):Boolean {
-    var sum = 0
-    for ((index, char) in cardNumber.withIndex()) {
-        var digit = Character.digit(char, 10)
-        if (index % 2 == 0) {
-            digit *= 2
-            if (digit > 9) {
-                digit -= 9
-            }
+fun String.luhnAlgorithm() = reversed()
+    .map(Character::getNumericValue)
+    .mapIndexed { index, digit ->
+        when {
+            index % 2 == 0 -> digit
+            digit < 5 -> digit * 2
+            else -> digit * 2 - 9
         }
-        sum += digit
+    }.sum() % 10 == 0
+
+fun isValidCardNumber(cardNumber: String): Boolean {
+    return if (cardNumber.isEmpty()) {
+        true
+    } else if (cardNumber.length != CARD_NUMBER_LENGTH) {
+        false
+    } else {
+        cardNumber.luhnAlgorithm()
     }
-    return sum % 10 == 0 && cardNumber.length == 16 || cardNumber.isEmpty()
 }
 
-fun validCardDate(date: String):Boolean {
+fun isValidCardDate(date: String): Boolean {
     val isValid =
         if (date.length == 5 && date.indexOf('/') == 2) {
             val month = date.substring(0, 2).toInt()
@@ -33,20 +38,26 @@ fun validCardDate(date: String):Boolean {
         } else {
             false
         }
-    return  isValid || date.isEmpty()
+    return isValid || date.isEmpty()
 }
 
-fun validCvv(cvv: String):Boolean {
-    return cvv.length == 3 || cvv.isEmpty()
+fun isValidCvv(cvv: String): Boolean {
+    return cvv.length == CARD_CVV_LENGTH || cvv.isEmpty()
 }
 
 fun getPaymentSystem(cardNumber: String): CardType? = when {
-    cardNumber.matches(MASTERCARD_REGEX) -> CardType.MASTERCARD
-    cardNumber.matches(VISA_REGEX) -> CardType.VISA
-    cardNumber.matches(MIR_REGEX) -> CardType.MIR
+    cardNumber.startsWith("4") -> CardType.VISA
+    cardNumber.startsWith("51") || cardNumber.startsWith("52") || cardNumber.startsWith("53")
+            || cardNumber.startsWith("54") || cardNumber.startsWith("55") -> CardType.MASTERCARD
+
+    cardNumber.startsWith("2") -> CardType.MIR
     else -> null
 }
 
 val MASTERCARD_REGEX = Regex("^5[1-5][0-9]{14}$")
 val VISA_REGEX = Regex("^4[0-9]{12}(?:[0-9]{3})?$")
 val MIR_REGEX = Regex("^2[0-9]{15}$")
+
+val CARD_NUMBER_LENGTH = 16
+val CARD_DATE_LENGTH = 5
+val CARD_CVV_LENGTH = 3
