@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -87,7 +88,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                         else -> {
                             val payCard = Card(viewModel.cardNumber, viewModel.cardDate)
                             viewModel.replaceCard(payCard)
-                            pay(payCard)
+                            pay(payCard.apply { cvv = editCardCvv.text.toString()})
                         }
                     }
                 }
@@ -101,19 +102,27 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
             editCardData.addTextChangedListener(ExpiryDateTextWatcher())
             editCardCvv.addTextChangedListener(ThreeDigitWatcher())
 
+            val typeface = ResourcesCompat.getFont(requireContext(), R.font.raleway_500)
+            cardNumber.typeface = typeface
+            cardData.typeface = typeface
+            cardCvv.typeface = typeface
+
             viewModel.currentPosition.observe(viewLifecycleOwner) { currentPosition ->
-                if (currentPosition == ADD_ITEM_INDEX || currentPosition == null) {
+                val position = currentPosition.first
+                cardsPager.smoothScrollToPosition((if (position == -1) cardsPager.adapter?.itemCount ?: 0 else (position?:0)))
+
+                if (position == ADD_ITEM_INDEX || position == null) {
                     editCardNumber.setText(EMPTY_STRING)
                     editCardData.setText(EMPTY_STRING)
                     editCardCvv.setText(EMPTY_STRING)
                 } else {
                     val cards = viewModel.cards.value
-                    editCardNumber.setText(cards?.get(currentPosition)?.number.orEmpty())
-                    editCardData.setText(cards?.get(currentPosition)?.date.orEmpty())
-                    if (currentPosition != (cards?.size?.minus(1))) editCardCvv.setText(EMPTY_STRING)
+                    editCardNumber.setText(cards?.get(position)?.number.orEmpty())
+                    editCardData.setText(cards?.get(position)?.date.orEmpty())
+                    if (position != (cards?.size?.minus(1)) || currentPosition.second.not()) editCardCvv.setText(EMPTY_STRING)
                 }
                 requireView().findFocus()?.clearFocus()
-                cardsAdapter.updatePosition(currentPosition)
+                cardsAdapter.updatePosition(position)
             }
 
             viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -126,6 +135,7 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
         with(binding) {
             editCardCvv.doOnTextChanged { text, _, _, _ ->
                 viewModel.putCardCvv(text.toString())
+                viewModel.validCardCvv(editCardCvv.hasFocus())
                 cardCvv.isEndIconVisible = text?.isEmpty() != true
             }
 
@@ -229,9 +239,5 @@ class BottomSheetPay : BottomSheetDialogFragment(), CardListener, PaymentResultL
                 .addToBackStack(ResultFragment::class.java.canonicalName)
             fragmentTransaction.commit()
         }
-    }
-
-    companion object {
-        const val CARD_LENGTH_TOTAL = 19
     }
 }

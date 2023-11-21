@@ -28,6 +28,8 @@ class CardAdapter(private val cardListener: CardListener) :
         fun bind(card: Card, isSelected: Boolean) {
             with(view) {
                 cardNumber.text = root.context.getString(R.string.card_number_format, card.number.takeLast(4))
+                bgCardType.setBackgroundResource(R.drawable.bg_card_type)
+                cardNumber.textSize = 12F
                 val paymentSystem = getPaymentSystem(card.number.filter { it.isDigit() })
                 if (paymentSystem != null) {
                     imageCardType.setImageResource(paymentSystem.image)
@@ -49,6 +51,8 @@ class CardAdapter(private val cardListener: CardListener) :
             with(view) {
                 cardNumber.text = root.context.getString(R.string.card_adding)
                 imageCardType.setImageDrawable(null)
+                cardNumber.textSize = 10F
+                bgCardType.setBackgroundResource(R.drawable.bg_card_type_add)
                 cardNumber.setTextColor(ContextCompat.getColor(root.context, R.color.gray))
                 if (isSelected) {
                     root.setBackgroundResource(R.drawable.bg_card_add_selected)

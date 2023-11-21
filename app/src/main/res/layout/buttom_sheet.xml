@@ -63,13 +63,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!--this is the actual edit text which takes the input-->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editCardNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:inputType="phone"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/raleway_800"
+                    android:fontFeatureSettings="pnum, lnum"
                     android:imeOptions="actionNext"
                     android:nextFocusDown="@id/editCardData"
                     android:textColorHint="@color/gray" />
@@ -98,6 +100,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
+                    android:fontFamily="@font/raleway_800"
+                    android:fontFeatureSettings="pnum, lnum"
                     android:imeOptions="actionNext"
                     android:nextFocusDown="@id/editCardCvv"
                     android:background="@android:color/transparent"
@@ -131,6 +135,8 @@
                     style="@style/customEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/raleway_800"
+                    android:fontFeatureSettings="pnum, lnum"
                     android:background="@android:color/transparent"
                     android:inputType="numberPassword"
                     android:textColorHint="@color/gray" />

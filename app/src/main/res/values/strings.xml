@@ -55,9 +55,14 @@
     <string name="express_delivery_address">Россия, г. Москва, ул. Цветной бульвар, д. 30, стр. 1</string>
     <string name="paid">Оплачено</string>
     <string name="paid_card">Картой онлайн MasterCard **** 3456</string>
-    <string name="paid_card_format">Картой онлайн masterCard **** %s</string>
+    <string name="paid_card_format">Картой онлайн %s **** %s</string>
 
     <string name="card_number_format">** %s</string>
     <string name="error">Что-то пошло не так</string>
     <string name="error_desc">Попробуйте повторить \n оплату позже</string>
+
+    <string name="mastercard">mastercard</string>
+    <string name="visa">visa</string>
+    <string name="mir">mir</string>
+    <string name="unknown">unknown</string>
 </resources>

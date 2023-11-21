@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import payselection.demo.R
 import payselection.demo.databinding.FResultBinding
 import payselection.demo.sdk.PaymentService
+import payselection.demo.utils.EMPTY_STRING
+import payselection.demo.utils.getPaymentSystem
 
 class ResultFragment : Fragment() {
     private lateinit var viewBinding: FResultBinding
@@ -52,7 +54,9 @@ class ResultFragment : Fragment() {
 
     private fun configurePaymentUI() {
         val paymentHelper = PaymentService.getInstance()
-        viewBinding.payCard.text = resources.getString(R.string.paid_card_format, paymentHelper.card?.number?.takeLast(4))
+        val cardNumber = paymentHelper.card?.number ?: EMPTY_STRING
+        viewBinding.payCard.text =
+            resources.getString(R.string.paid_card_format, getString(getPaymentSystem(cardNumber)?.title ?: R.string.unknown), cardNumber.takeLast(4))
     }
 
     companion object {
