@@ -16,7 +16,8 @@ internal interface RestConverter {
         transactionDetails: TransactionDetails,
         customerInfo: CustomerInfo?,
         receiptData: JsonElement?,
-        rebillFlag: Boolean?
+        rebillFlag: Boolean?,
+        extraData: JsonElement?
     ): JsonObject
 
     fun convertTransactions(list: List<TransactionStatusObject>): List<TransactionStatus>

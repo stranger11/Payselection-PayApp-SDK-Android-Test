@@ -8,6 +8,7 @@ import payselection.payments.sdk.api.utils.RestConverterImpl
 import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.crypto.CryptoModule
 import payselection.payments.sdk.models.requests.pay.CustomerInfo
+import payselection.payments.sdk.models.requests.pay.ExtraData
 import payselection.payments.sdk.models.requests.pay.PaymentData
 import payselection.payments.sdk.models.requests.pay.ReceiptData
 import payselection.payments.sdk.models.results.pay.PaymentResult
@@ -28,9 +29,10 @@ internal class PaymentSdkImpl(
         orderId: String,
         paymentData: PaymentData,
         description: String,
-        customerInfo: CustomerInfo?,
-        receiptData: ReceiptData?,
-        rebillFlag: Boolean?
+        rebillFlag: Boolean?,
+        customerInfo: CustomerInfo,
+        extraData: ExtraData?,
+        receiptData: ReceiptData?
     ): Result<PaymentResult> {
         val paymentDataString = gson.toJson(paymentData).toString()
         val token = CryptoModule.createCryptogram(paymentDataString, configuration.publicKey)
@@ -42,7 +44,8 @@ internal class PaymentSdkImpl(
                 transactionDetails = paymentData.transactionDetails,
                 customerInfo = customerInfo,
                 receiptData = gson.toJsonTree(receiptData),
-                rebillFlag = rebillFlag
+                rebillFlag = rebillFlag,
+                extraData = gson.toJsonTree(extraData)
             )
         )
     }
