@@ -1,3 +1,68 @@
 <resources>
     <string name="app_name">PayselectionSdk-DEMO</string>
+
+    <string name="checkout_title">Оформление заказа №31</string>
+
+<!--    products-->
+    <string name="product_1_name">Белый пончик</string>
+    <string name="product_2_name">Черная сфера</string>
+    <string name="product_3_name">Стеклянный куб</string>
+    <string name="product_1_desc">Металл, 13 см</string>
+    <string name="product_2_desc">Гранит, 10 см</string>
+    <string name="product_3_desc">Стекло, 20 см</string>
+    <string name="product_1_price">99 ₽</string>
+    <string name="product_2_price">49 ₽</string>
+    <string name="price_149">149 ₽</string>
+
+    <string name="card_title_format">**%s</string>
+
+    <string name="price_297">297 ₽</string>
+    <string name="price_0">0 ₽</string>
+    <string name="price_446">446 ₽</string>
+
+    <string name="price">Стоимость</string>
+    <string name="delivery">Доставка</string>
+    <string name="nds">НДС</string>
+    <string name="sale">Скидка</string>
+    <string name="total">Итого</string>
+    <string name="pay">Оплатить</string>
+
+
+    <string name="payment_card">Оплата картой</string>
+    <string name="card_number">Номер карты</string>
+    <string name="dd_mm">ММ/ГГ</string>
+    <string name="cvv">CVV</string>
+
+    <string name="card_adding">Добавить карту</string>
+
+    <string name="error_cvv">Ошибка CVV</string>
+    <string name="error_date">Ошибка даты</string>
+    <string name="error_number">Некорректный номер карты</string>
+
+    <string name="pay_card">Оплатить картой</string>
+    <string name="save_card">Cохранить карту</string>
+
+
+    <string name="navigate_main">На главную</string>
+    <string name="order_success">Заказ №31 \n успешно оплачен</string>
+    <string name="order_info">Информация о заказе</string>
+    <string name="order_number">Заказ №31</string>
+    <string name="odrer_date">12.09.2023 10:30</string>
+    <string name="recipient">Получатель</string>
+    <string name="recipient_name">Гарик Кравцов</string>
+    <string name="recipient_phone">+7 910 000-00-00</string>
+    <string name="express_delivery">Курьерская доставка</string>
+    <string name="express_delivery_address">Россия, г. Москва, ул. Цветной бульвар, д. 30, стр. 1</string>
+    <string name="paid">Оплачено</string>
+    <string name="paid_card">Картой онлайн MasterCard **** 3456</string>
+    <string name="paid_card_format">Картой онлайн %s **** %s</string>
+
+    <string name="card_number_format">** %s</string>
+    <string name="error">Что-то пошло не так</string>
+    <string name="error_desc">Попробуйте повторить \n оплату позже</string>
+
+    <string name="mastercard">mastercard</string>
+    <string name="visa">visa</string>
+    <string name="mir">mir</string>
+    <string name="unknown">unknown</string>
 </resources>

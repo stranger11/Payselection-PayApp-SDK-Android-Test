@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customEdit">
+        <item name="android:textColorPrimary">@color/gray</item>
+    </style>
+
+    <style name="text">
+        <item name="android:fontFamily">@font/raleway_700</item>
+        <item name="android:fontFeatureSettings">pnum, lnum</item>
+    </style>
+</resources>

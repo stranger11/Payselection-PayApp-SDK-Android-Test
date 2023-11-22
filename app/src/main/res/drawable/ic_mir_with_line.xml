@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/ic_line"
+        android:gravity="left" />
+    <item
+        android:id="@+id/item_card_type"
+        android:drawable="@drawable/ic_mir"
+        android:gravity="center"
+        android:start="15dp"
+        android:end="15dp"/>
+</layer-list>

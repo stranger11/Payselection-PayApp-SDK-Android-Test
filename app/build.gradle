@@ -16,6 +16,10 @@ android {
         versionName "1.0." + versionCode
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -52,4 +56,6 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger2Version"
 
     implementation project(path: ':sdk')
+
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
 }
