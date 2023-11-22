@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ReceiptData(
     @SerializedName("timestamp")
-    val timestamp: String? = null,
+    val timestamp: String,
     @SerializedName("external_id")
     val externalId: String? = null,
     @SerializedName("receipt")

@@ -6,66 +6,160 @@ import payselection.payments.sdk.models.requests.pay.enum.ReceiptPaymentObject
 import payselection.payments.sdk.models.requests.pay.enum.VatType
 import java.math.BigDecimal
 
-data class Receipt(
-    @SerializedName("client")
-    val client: Client,
-    @SerializedName("company")
-    val company: Company,
-    @SerializedName("agent_info")
-    val agentInfo: AgentInfo? = null,
-    @SerializedName("supplier_info")
-    val supplierInfo: SupplierInfo? = null,
-    @SerializedName("items")
-    val items: List<Item>,
-    @SerializedName("payments")
-    val payments: List<Payment>,
-    @SerializedName("vats")
-    val vats: List<Vat>? = null,
-    @SerializedName("total")
-    val total: BigDecimal,
-    @SerializedName("additional_check_props")
-    val additionalCheckProps: String? = null,
-    @SerializedName("cashier")
-    val cashier: String? = null,
-    @SerializedName("additional_user_props")
-    val additionalUserProps: AdditionalUserProps? = null,
-    @SerializedName("operating_check_props")
-    val operatingCheckProps: OperatingCheckProps? = null,
-    @SerializedName("sectoral_check_props")
-    val sectoralCheckProps: SectoralCheckProps? = null
+sealed class Receipt {
+    data class Receipt_ffd05(
+        @SerializedName("client")
+        val client: Client,
+        @SerializedName("company")
+        val company: Company,
+        @SerializedName("agent_info")
+        val agentInfo: AgentInfo? = null,
+        @SerializedName("supplier_info")
+        val supplierInfo: SupplierInfo? = null,
+        @SerializedName("items")
+        val items: List<Item.Item_ffd05>,
+        @SerializedName("payments")
+        val payments: List<Payment>,
+        @SerializedName("vats")
+        val vats: List<Vat>? = null,
+        @SerializedName("total")
+        val total: BigDecimal,
+        @SerializedName("additional_check_props")
+        val additionalCheckProps: String? = null,
+        @SerializedName("cashier")
+        val cashier: String? = null,
+        @SerializedName("additional_user_props")
+        val additionalUserProps: AdditionalUserProps? = null,
+    ) : Receipt()
+
+    data class Receipt_ffd2(
+        @SerializedName("client")
+        val client: Client,
+        @SerializedName("company")
+        val company: Company,
+        @SerializedName("items")
+        val items: List<Item.Item_ffd2>,
+        @SerializedName("payments")
+        val payments: List<Payment>,
+        @SerializedName("vats")
+        val vats: List<Vat>? = null,
+        @SerializedName("total")
+        val total: BigDecimal,
+        @SerializedName("additional_check_props")
+        val additionalCheckProps: String? = null,
+        @SerializedName("cashier")
+        val cashier: String? = null,
+        @SerializedName("additional_user_props")
+        val additionalUserProps: AdditionalUserProps? = null,
+        @SerializedName("operating_check_props")
+        val operatingCheckProps: OperatingCheckProps? = null,
+        @SerializedName("sectoral_check_props")
+        val sectoralCheckProps: SectoralCheckProps? = null
+    ) : Receipt()
+}
+
+sealed class Item {
+    data class Item_ffd05(
+        @SerializedName("name")
+        val name: String,
+        @SerializedName("price")
+        val price: BigDecimal,
+        @SerializedName("quantity")
+        val quantity: BigDecimal,
+        @SerializedName("sum")
+        val sum: BigDecimal?,
+        @SerializedName("measurement_unit")
+        val measurementUnit: String? = null,
+        @SerializedName("payment_method")
+        val paymentMethod: ReceiptPaymentMethod,
+        @SerializedName("payment_object")
+        val paymentObject: ReceiptPaymentObject,
+        @SerializedName("nomenclature_code")
+        val nomenclatureCode: String? = null,
+        @SerializedName("vat")
+        val vat: Vat,
+        @SerializedName("agent_info")
+        val agentInfo: AgentInfo? = null,
+        @SerializedName("supplier_info")
+        val supplierInfo: SupplierInfo? = null,
+        @SerializedName("user_data")
+        val userData: String? = null,
+        @SerializedName("excise")
+        val excise: BigDecimal? = null,
+        @SerializedName("country_code")
+        val countryCode: String? = null,
+        @SerializedName("declaration_number")
+        val declarationCode: String? = null
+    ) : Receipt()
+
+    data class Item_ffd2(
+        @SerializedName("name")
+        val name: String,
+        @SerializedName("price")
+        val price: BigDecimal,
+        @SerializedName("quantity")
+        val quantity: BigDecimal,
+        @SerializedName("sum")
+        val sum: BigDecimal?,
+        @SerializedName("measure")
+        val measure: Int,
+        @SerializedName("measurement_unit")
+        val paymentMethod: ReceiptPaymentMethod,
+        @SerializedName("payment_object")
+        val paymentObject: Int,
+        @SerializedName("vat")
+        val vat: Vat,
+        @SerializedName("agent_info")
+        val agentInfo: AgentInfo? = null,
+        @SerializedName("supplier_info")
+        val supplierInfo: SupplierInfo? = null,
+        @SerializedName("user_data")
+        val userData: String? = null,
+        @SerializedName("excise")
+        val excise: BigDecimal? = null,
+        @SerializedName("country_code")
+        val countryCode: String? = null,
+        @SerializedName("declaration_number")
+        val declarationCode: String? = null,
+        @SerializedName("mark_quantity")
+        val markQuantity: MarkQuantity? = null,
+        @SerializedName("mark_processing_mode")
+        val markProcessingMode: String? = null,
+        @SerializedName("sectoral_item_props")
+        val sectoralItemProps: SectoralCheckProps? = null,
+        @SerializedName("mark_code")
+        val markCode: MarkCode? = null
+    ) : Receipt()
+}
+
+data class MarkQuantity(
+    @SerializedName("numberator")
+    val numberator: Int? = null,
+    @SerializedName("denominator")
+    val denominator: Int,
 )
 
-data class Item(
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("price")
-    val price: BigDecimal,
-    @SerializedName("quantity")
-    val quantity: BigDecimal,
-    @SerializedName("sum")
-    val sum: String?,
-    @SerializedName("measurement_unit")
-    val measurementUnit: String? = null,
-    @SerializedName("payment_method")
-    val paymentMethod: ReceiptPaymentMethod,
-    @SerializedName("payment_object")
-    val paymentObject: ReceiptPaymentObject,
-    @SerializedName("nomenclature_code")
-    val nomenclatureCode: String? = null,
-    @SerializedName("vat")
-    val vat: Vat,
-    @SerializedName("agent_info")
-    val agentInfo: AgentInfo? = null,
-    @SerializedName("supplier_info")
-    val supplierInfo: SupplierInfo? = null,
-    @SerializedName("user_data")
-    val userData: String? = null,
-    @SerializedName("excise")
-    val excise: BigDecimal? = null,
-    @SerializedName("country_code")
-    val countryCode: String? = null,
-    @SerializedName("declaration_number")
-    val declarationCode: String? = null
+data class MarkCode(
+    @SerializedName("unknown")
+    val unknown: String? = null,
+    @SerializedName("ean")
+    val ean: String? = null,
+    @SerializedName("ean13")
+    val ean13: String? = null,
+    @SerializedName("itf14")
+    val itf14: String? = null,
+    @SerializedName("gs10")
+    val gs10: String? = null,
+    @SerializedName("gs1m")
+    val gs1m: String? = null,
+    @SerializedName("short")
+    val short: String? = null,
+    @SerializedName("fur")
+    val fur: String? = null,
+    @SerializedName("egais20")
+    val egais20: String? = null,
+    @SerializedName("egais30")
+    val egais30: String? = null,
 )
 
 data class Vat(
@@ -77,9 +171,9 @@ data class Vat(
 
 data class Payment(
     @SerializedName("type")
-    val type: String,
+    val type: Int,
     @SerializedName("sum")
-    val sum: String
+    val sum: BigDecimal?
 )
 
 data class AdditionalUserProps(
@@ -113,7 +207,3 @@ data class SectoralProp(
     val value: String
 )
 
-data class SupplierInfo(
-    @SerializedName("phones")
-    val phones: List<String>? = null
-)
