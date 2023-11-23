@@ -14,3 +14,10 @@ data class CardDetails(
     @SerializedName("ExpYear")
     val expYear: String
 )
+
+data class TokenDetails(
+    @SerializedName("Type")
+    val type: String = "Yandex",
+    @SerializedName("PayToken")
+    val payToken: String,
+)

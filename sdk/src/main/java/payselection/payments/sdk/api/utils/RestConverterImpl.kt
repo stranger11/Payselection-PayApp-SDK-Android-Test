@@ -22,9 +22,10 @@ internal class RestConverterImpl() : RestConverter {
     override fun createTokenPayJson(
         orderId: String,
         description: String,
-        token: String,
+        paymentDetails: JsonElement?,
         transactionDetails: TransactionDetails,
         customerInfo: CustomerInfo?,
+        paymentMethod: PaymentMethod,
         receiptData: JsonElement?,
         rebillFlag: Boolean?,
         extraData: JsonElement?
@@ -33,6 +34,8 @@ internal class RestConverterImpl() : RestConverter {
         jsonObject.addProperty("OrderId", orderId)
         jsonObject.addProperty("Amount", transactionDetails.amount)
         jsonObject.addProperty("Currency", transactionDetails.currency)
+        jsonObject.addProperty("Description", description)
+        rebillFlag?.let { jsonObject.addProperty("RebillFlag", rebillFlag) }
         jsonObject.add("CustomerInfo", JsonObject().apply {
             customerInfo?.email?.let { addProperty("Email", customerInfo.email) }
             customerInfo?.phone?.let { addProperty("Phone", customerInfo.phone) }
@@ -45,21 +48,16 @@ internal class RestConverterImpl() : RestConverter {
             customerInfo?.country?.let { addProperty("Country", customerInfo.country) }
             addProperty("IP", getIPAddress())
         })
-        rebillFlag?.let {  jsonObject.addProperty("RebillFlag", rebillFlag) }
-
-        jsonObject.addProperty("Description", description)
-        jsonObject.addProperty("PaymentMethod", PaymentMethod.Token.name)
-        jsonObject.add("PaymentDetails", JsonObject().apply {
-            addProperty("Type", PaymentDetailsType.Internal.name)
-            addProperty("PayToken", token)
-        })
-
         extraData?.let { data ->
             jsonObject.add("ExtraData", data)
         }
+        jsonObject.addProperty("PaymentMethod", paymentMethod.name)
 
         receiptData?.let { data ->
             jsonObject.add("ReceiptData", data)
+        }
+        paymentDetails?.let {
+            jsonObject.add("PaymentDetails", paymentDetails)
         }
         return jsonObject
     }

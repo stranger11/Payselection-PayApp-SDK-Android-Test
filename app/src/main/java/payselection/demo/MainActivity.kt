@@ -59,11 +59,14 @@ class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogLis
         sdk.pay(
             orderId = orderId,
             description = "test payment",
-            paymentData = PaymentData.create(
+            paymentData = PaymentData.createCrypto(
                 transactionDetails = TransactionDetails(
                     amount = "10",
                     currency = "RUB"
                 ),
+//                tokenDetails = TokenDetails(
+//                    payToken = "123"
+//                )
                 cardDetails = CardDetails(
                     cardholderName = "TEST CARD",
                     cardNumber = cardNumber,

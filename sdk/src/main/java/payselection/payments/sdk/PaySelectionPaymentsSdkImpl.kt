@@ -10,7 +10,10 @@ import payselection.payments.sdk.crypto.CryptoModule
 import payselection.payments.sdk.models.requests.pay.CustomerInfo
 import payselection.payments.sdk.models.requests.pay.ExtraData
 import payselection.payments.sdk.models.requests.pay.PaymentData
+import payselection.payments.sdk.models.requests.pay.PaymentDetailsCryptogram
+import payselection.payments.sdk.models.requests.pay.PaymentDetailsToken
 import payselection.payments.sdk.models.requests.pay.ReceiptData
+import payselection.payments.sdk.models.requests.pay.enum.PaymentMethod
 import payselection.payments.sdk.models.results.pay.PaymentResult
 import payselection.payments.sdk.models.results.status.TransactionStatus
 import payselection.payments.sdk.utils.Result
@@ -34,15 +37,26 @@ internal class PaymentSdkImpl(
         extraData: ExtraData?,
         receiptData: ReceiptData?
     ): Result<PaymentResult> {
-        val paymentDataString = gson.toJson(paymentData).toString()
-        val token = CryptoModule.createCryptogram(paymentDataString, configuration.publicKey)
+        val paymentDetails = when (paymentData.paymentMethod) {
+            PaymentMethod.Cryptogram -> {
+                val paymentDataString = gson.toJson(paymentData).toString()
+                PaymentDetailsCryptogram(CryptoModule.createCryptogram(paymentDataString, configuration.publicKey))
+            }
+
+            PaymentMethod.Token -> {
+                PaymentDetailsToken(paymentData.tokenDetails?.payToken ?: "")
+            }
+
+            PaymentMethod.QR -> null
+        }
         return restClient.pay(
             restConverter.createTokenPayJson(
                 orderId = orderId,
                 description = description,
-                token = token,
+                paymentDetails = gson.toJsonTree(paymentDetails),
                 transactionDetails = paymentData.transactionDetails,
                 customerInfo = customerInfo,
+                paymentMethod = paymentData.paymentMethod,
                 receiptData = gson.toJsonTree(receiptData),
                 rebillFlag = rebillFlag,
                 extraData = gson.toJsonTree(extraData)
