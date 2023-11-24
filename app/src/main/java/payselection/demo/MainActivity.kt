@@ -10,6 +10,9 @@ import kotlinx.coroutines.launch
 import payselection.payments.sdk.PaySelectionPaymentsSdk
 import payselection.payments.sdk.configuration.SdkConfiguration
 import payselection.payments.sdk.models.requests.pay.*
+import payselection.payments.sdk.models.requests.pay.enum.ReceiptPaymentMethod
+import payselection.payments.sdk.models.requests.pay.enum.ReceiptPaymentObject
+import payselection.payments.sdk.models.requests.pay.enum.VatType
 import payselection.payments.sdk.ui.ThreeDsDialogFragment
 
 
@@ -83,6 +86,37 @@ class MainActivity : AppCompatActivity(), ThreeDsDialogFragment.ThreeDSDialogLis
                 town = "string",
                 zip = "string",
                 country = "USA"
+            ),
+            receiptData = ReceiptData(
+                timestamp = "string",
+                externalId = "string",
+                receipt = Receipt.Receipt_ffd05(
+                    client = Client(),
+                    company = Company(
+                        inn = "string",
+                        paymentAddress = "string"
+                    ),
+                    items = listOf(
+                        Item.Item_ffd05(
+                            name = "string",
+                            price = 78985.55,
+                            quantity = 99999.999,
+                            sum = null,
+                            paymentMethod = ReceiptPaymentMethod.FullPayment,
+                            paymentObject = ReceiptPaymentObject.Commodity,
+                            vat = Vat(
+                                type = VatType.Vat0
+                            )
+                            )
+                    ),
+                    payments = listOf(
+                        Payment(
+                            type = 1,
+                            sum = 9999999.99
+                        )
+                    ),
+                    total = 789.33
+                )
             ),
             rebillFlag = false
         ).proceedResult(

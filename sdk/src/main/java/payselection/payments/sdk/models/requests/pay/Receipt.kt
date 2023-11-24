@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import payselection.payments.sdk.models.requests.pay.enum.ReceiptPaymentMethod
 import payselection.payments.sdk.models.requests.pay.enum.ReceiptPaymentObject
 import payselection.payments.sdk.models.requests.pay.enum.VatType
-import java.math.BigDecimal
 
 sealed class Receipt {
     data class Receipt_ffd05(
@@ -23,7 +22,7 @@ sealed class Receipt {
         @SerializedName("vats")
         val vats: List<Vat>? = null,
         @SerializedName("total")
-        val total: BigDecimal,
+        val total: Double,
         @SerializedName("additional_check_props")
         val additionalCheckProps: String? = null,
         @SerializedName("cashier")
@@ -44,7 +43,7 @@ sealed class Receipt {
         @SerializedName("vats")
         val vats: List<Vat>? = null,
         @SerializedName("total")
-        val total: BigDecimal,
+        val total: Double,
         @SerializedName("additional_check_props")
         val additionalCheckProps: String? = null,
         @SerializedName("cashier")
@@ -63,11 +62,11 @@ sealed class Item {
         @SerializedName("name")
         val name: String,
         @SerializedName("price")
-        val price: BigDecimal,
+        val price: Double,
         @SerializedName("quantity")
-        val quantity: BigDecimal,
+        val quantity: Double,
         @SerializedName("sum")
-        val sum: BigDecimal?,
+        val sum: Double?,
         @SerializedName("measurement_unit")
         val measurementUnit: String? = null,
         @SerializedName("payment_method")
@@ -85,7 +84,7 @@ sealed class Item {
         @SerializedName("user_data")
         val userData: String? = null,
         @SerializedName("excise")
-        val excise: BigDecimal? = null,
+        val excise: Double? = null,
         @SerializedName("country_code")
         val countryCode: String? = null,
         @SerializedName("declaration_number")
@@ -96,11 +95,11 @@ sealed class Item {
         @SerializedName("name")
         val name: String,
         @SerializedName("price")
-        val price: BigDecimal,
+        val price: Double,
         @SerializedName("quantity")
-        val quantity: BigDecimal,
+        val quantity: Double,
         @SerializedName("sum")
-        val sum: BigDecimal?,
+        val sum: Double?,
         @SerializedName("measure")
         val measure: Int,
         @SerializedName("measurement_unit")
@@ -116,7 +115,7 @@ sealed class Item {
         @SerializedName("user_data")
         val userData: String? = null,
         @SerializedName("excise")
-        val excise: BigDecimal? = null,
+        val excise: Double? = null,
         @SerializedName("country_code")
         val countryCode: String? = null,
         @SerializedName("declaration_number")
@@ -166,14 +165,14 @@ data class Vat(
     @SerializedName("type")
     val type: VatType,
     @SerializedName("sum")
-    val sum: BigDecimal? = null
+    val sum: Double? = null
 )
 
 data class Payment(
     @SerializedName("type")
     val type: Int,
     @SerializedName("sum")
-    val sum: BigDecimal?
+    val sum: Double?
 )
 
 data class AdditionalUserProps(
