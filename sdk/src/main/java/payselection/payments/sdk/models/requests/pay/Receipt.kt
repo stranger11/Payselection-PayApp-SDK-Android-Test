@@ -53,7 +53,7 @@ sealed class Receipt {
         @SerializedName("operating_check_props")
         val operatingCheckProps: OperatingCheckProps? = null,
         @SerializedName("sectoral_check_props")
-        val sectoralCheckProps: SectoralCheckProps? = null
+        val sectoralCheckProps: List<SectoralProp>? = null
     ) : Receipt()
 }
 
@@ -102,7 +102,7 @@ sealed class Item {
         val sum: Double?,
         @SerializedName("measure")
         val measure: Int,
-        @SerializedName("measurement_unit")
+        @SerializedName("payment_method")
         val paymentMethod: ReceiptPaymentMethod,
         @SerializedName("payment_object")
         val paymentObject: Int,
@@ -125,15 +125,15 @@ sealed class Item {
         @SerializedName("mark_processing_mode")
         val markProcessingMode: String? = null,
         @SerializedName("sectoral_item_props")
-        val sectoralItemProps: SectoralCheckProps? = null,
+        val sectoralItemProps: List<SectoralProp>? = null,
         @SerializedName("mark_code")
         val markCode: MarkCode? = null
     ) : Receipt()
 }
 
 data class MarkQuantity(
-    @SerializedName("numberator")
-    val numberator: Int? = null,
+    @SerializedName("numerator")
+    val numerator: Int? = null,
     @SerializedName("denominator")
     val denominator: Int,
 )
@@ -189,10 +189,6 @@ data class OperatingCheckProps(
     val value: String,
     @SerializedName("timestamp")
     val timestamp: String
-)
-
-data class SectoralCheckProps(
-    val props: List<SectoralProp>
 )
 
 data class SectoralProp(
